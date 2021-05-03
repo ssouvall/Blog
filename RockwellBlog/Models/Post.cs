@@ -37,5 +37,10 @@ namespace RockwellBlog.Models
         //by default in the database the enum stores the numerical value of the dropdown. Indexed from 0.
         
         public PublishState PublishState { get; set; }
+
+        //navigational property for the child class
+        //referenced by the BlogId. Creates new instance of blog.
+        //brings in the entire blog record represented by the BlogId reference
+        public virtual Blog Blog { get; set; }
     }
 }
