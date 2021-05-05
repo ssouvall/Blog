@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RockwellBlog.Data;
 using RockwellBlog.Models;
+using RockwellBlog.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,8 @@ namespace RockwellBlog
                     .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddScoped<IBlogImageService, BasicFileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
