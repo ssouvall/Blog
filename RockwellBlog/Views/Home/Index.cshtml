@@ -1,8 +1,27 @@
-﻿@{
+﻿@model IEnumerable<Blog>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <!--Model is the IEnumerable and blog is the instance of Model-->
+            @foreach (var blog in Model)
+            {
+            <div class="post-preview">
+                <a href="post.html">
+                    <h2 class="post-title">@blog.Name</h2>
+                    <h3 class="post-subtitle">@blog.Description</h3>
+                </a>
+                <p class="post-meta">
+                    <!--use .ToString("MMM dd, yyyy") to format date-->
+                    Posted by Stephen Souvall on @blog.Created.ToString("MMM dd, yyyy")
+                </p>
+            </div>
+            <hr />
+            }
+            <!-- Pager-->
+            <div class="clearfix"><a class="btn btn-primary float-right" href="#!">Older Posts →</a></div>
+        </div>
+    </div>

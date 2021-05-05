@@ -104,6 +104,7 @@ namespace RockwellBlog.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+               ;
                 var user = new BlogUser
                 {
                     FirstName = Input.FirstName,
@@ -115,7 +116,7 @@ namespace RockwellBlog.Areas.Identity.Pages.Account
                         await _blogImageService.EncodeFileAsync(_configuration["DefaultUserImage"]),
 
                     ContentType = Input.ImageFile is null ?
-                        Path.GetExtension(_configuration["DefaultUserImage"]) :
+                        _configuration["DefaultUserImage"].Split('.')[1] :
                         _blogImageService.ContentType(Input.ImageFile)
                     
                 };
