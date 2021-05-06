@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,8 +29,17 @@ namespace RockwellBlog.Models
         //would make most sense to set this up programmatically in an http post rather than letting the user set this up
         //same with date updated
         [DataType(DataType.Date)]
-        [Display(Name = "Created Date")]
+        [Display(Name = "Updated Date")]
         public DateTime? Updated { get; set; }
+
+        [Display(Name = "Upload Image")]
+        public byte[] ImageData { get; set; }
+
+        public string ContentType { get; set; }
+
+        [NotMapped]
+        [Display(Name="Choose Blog Image")]
+        public IFormFile ImageFile { get; set; }
 
         //Navigational properties. This is the property that stores collection of blog posts
         //The virtual works with entity framework, allows "lazy loading" of data. Has to do with when related data is retrieved from the database. 

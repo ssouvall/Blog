@@ -2,37 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using RockwellBlog.Data;
 using RockwellBlog.Models;
-using RockwellBlog.Services;
 
 namespace RockwellBlog.Controllers
 {
-    public class BlogsController : Controller
+    public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IBlogImageService _blogImageService;
-        private readonly IConfiguration _configuration;
 
-        public BlogsController(ApplicationDbContext context, IBlogImageService blogImageService, IConfiguration configuration)
+        public PostsController(ApplicationDbContext context)
         {
             _context = context;
-            _blogImageService = blogImageService;
-            _configuration = configuration;
         }
 
-        // GET: Blogs
+        // GET: Posts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Blogs.ToListAsync());
+            var applicationDbContext = _context.Posts.Include(p => p.Blog);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Blogs/Details/5
+        // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -40,50 +34,42 @@ namespace RockwellBlog.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blogs
+            var post = await _context.Posts
+                .Include(p => p.Blog)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (blog == null)
+            if (post == null)
             {
                 return NotFound();
             }
 
-            return View(blog);
+            return View(post);
         }
 
-        // GET: Blogs/Create
+        // GET: Posts/Create
         public IActionResult Create()
         {
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description");
             return View();
         }
 
-        // POST: Blogs/Create
+        // POST: Posts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,ImageFile")] Blog blog)
+        public async Task<IActionResult> Create([Bind("Id,BlogId,Title,Abstract,Content,Created,Updated,Slug,PublishState")] Post post)
         {
             if (ModelState.IsValid)
             {
-                //created date
-                blog.Created = DateTime.Now;
-
-                //upload blog image. If there is no image, default to defaultBlogImage
-                blog.ImageData = await _blogImageService.EncodeFileAsync(blog.ImageFile) ??
-                    await _blogImageService.EncodeFileAsync(_configuration["DefaultBlogImage"]);
-                
-                blog.ContentType = blog.ImageFile is null ?
-                        _configuration["DefaultBlogImage"].Split('.')[1] :
-                        _blogImageService.ContentType(blog.ImageFile);
-
-                _context.Add(blog);
+                _context.Add(post);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(nameof(Index));
             }
-            return View(blog);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
+            return View(post);
         }
 
-        // GET: Blogs/Edit/5
+        // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,22 +77,23 @@ namespace RockwellBlog.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blogs.FindAsync(id);
-            if (blog == null)
+            var post = await _context.Posts.FindAsync(id);
+            if (post == null)
             {
                 return NotFound();
             }
-            return View(blog);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
+            return View(post);
         }
 
-        // POST: Blogs/Edit/5
+        // POST: Posts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created,Updated")] Blog blog, IFormFile NewBlogImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,Updated,Slug,PublishState")] Post post)
         {
-            if (id != blog.Id)
+            if (id != post.Id)
             {
                 return NotFound();
             }
@@ -115,21 +102,12 @@ namespace RockwellBlog.Controllers
             {
                 try
                 {
-                    //Update date
-                    blog.Updated = DateTime.Now;
-
-                    if (NewBlogImage is not null)
-                    {
-                        blog.ContentType = _blogImageService.ContentType(NewBlogImage);
-                        blog.ImageData = await _blogImageService.EncodeFileAsync(NewBlogImage);
-                    }
-
-                    _context.Update(blog);
+                    _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BlogExists(blog.Id))
+                    if (!PostExists(post.Id))
                     {
                         return NotFound();
                     }
@@ -140,10 +118,11 @@ namespace RockwellBlog.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(blog);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
+            return View(post);
         }
 
-        // GET: Blogs/Delete/5
+        // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -151,30 +130,31 @@ namespace RockwellBlog.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blogs
+            var post = await _context.Posts
+                .Include(p => p.Blog)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (blog == null)
+            if (post == null)
             {
                 return NotFound();
             }
 
-            return View(blog);
+            return View(post);
         }
 
-        // POST: Blogs/Delete/5
+        // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var blog = await _context.Blogs.FindAsync(id);
-            _context.Blogs.Remove(blog);
+            var post = await _context.Posts.FindAsync(id);
+            _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BlogExists(int id)
+        private bool PostExists(int id)
         {
-            return _context.Blogs.Any(e => e.Id == id);
+            return _context.Posts.Any(e => e.Id == id);
         }
     }
 }
