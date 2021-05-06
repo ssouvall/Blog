@@ -10372,3 +10372,9 @@ header.masthead .post-heading .meta a {
     font-size: 36px;
   }
 }
+
+.post-img {
+    width: 100%;
+    height: 15rem;
+    object-fit: cover;
+}
