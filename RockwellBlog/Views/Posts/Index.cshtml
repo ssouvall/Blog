@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<RockwellBlog.Models.Post>
-
+@using RockwellBlog.Services
+@inject IBlogImageService _blogImageService
 @{
     ViewData["Title"] = "Index";
 }
@@ -9,69 +10,41 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Abstract)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Slug)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PublishState)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Blog)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Abstract)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Slug)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PublishState)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Blog.Description)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+        <!--Model is the IEnumerable and blog is the instance of Model-->
+        @foreach (var post in Model)
+        {
+            <div class="post-preview">
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <img src="@_blogImageService.DecodeImage(post.ImageData, post.ContentType)" alt="post image" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <a class="btn btn-primary mt-3" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">Read Post</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">
+                            <h2 class="post-title">@post.Title</h2>
+                            <h3 class="post-subtitle">@post.Abstract</h3>
+                        </a>
+                        <p class="post-meta">
+                            <!--use .ToString("MMM dd, yyyy") to format date-->
+                            Posted by Stephen Souvall on @post.Created.ToString("MMM dd, yyyy")
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <hr />
+        }
+        <!-- Pager-->
+        <div class="clearfix float-right"><a class="btn btn-primary ml-3" href="#!">Older Posts →</a></div>
+    </div>
+</div>

@@ -1,7 +1,9 @@
-﻿using RockwellBlog.Enums;
+﻿using Microsoft.AspNetCore.Http;
+using RockwellBlog.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,7 +32,17 @@ namespace RockwellBlog.Models
         [DataType(DataType.Date)]
         [Display(Name = "Created Date")]
         public DateTime? Updated { get; set; }
-        
+
+        [Display(Name = "Upload Image")]
+        public byte[] ImageData { get; set; }
+
+        public string ContentType { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Choose Blog Image")]
+        public IFormFile ImageFile { get; set; }
+
+
         public string Slug { get; set; }
         //need a way to record the state of a post (whether it's ready to be published/viewed). Maybe have preview mode, etc. Will use an enum for this.
         //access enum PublishState. Will create a dropdown with multiple options. Enum lives on its own and is a tool that can be used elsewhere.

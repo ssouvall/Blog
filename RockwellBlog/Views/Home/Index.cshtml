@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<Blog>
+@using RockwellBlog.Services
+@inject IBlogImageService _blogImageService
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -10,14 +12,30 @@
             @foreach (var blog in Model)
             {
             <div class="post-preview">
-                <a href="post.html">
-                    <h2 class="post-title">@blog.Name</h2>
-                    <h3 class="post-subtitle">@blog.Description</h3>
-                </a>
-                <p class="post-meta">
-                    <!--use .ToString("MMM dd, yyyy") to format date-->
-                    Posted by Stephen Souvall on @blog.Created.ToString("MMM dd, yyyy")
-                </p>
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <img src="@_blogImageService.DecodeImage(blog.ImageData, blog.ContentType)" alt="blog image" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <a class="btn btn-primary mt-3" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">Read Posts</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
+                            <h2 class="post-title">@blog.Name</h2>
+                            <h3 class="post-subtitle">@blog.Description</h3>
+                        </a>
+                        <p class="post-meta">
+                            <!--use .ToString("MMM dd, yyyy") to format date-->
+                            Posted by Stephen Souvall on @blog.Created.ToString("MMM dd, yyyy")
+                        </p>
+                    </div>
+                </div>
             </div>
             <hr />
             }
