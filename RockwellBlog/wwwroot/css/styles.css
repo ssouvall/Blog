@@ -47,6 +47,12 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+    background-image: url('//i.ibb.co/M1wWZBJ/email-pattern.png');
+    margin: 0;
+}
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
@@ -59,14 +65,13 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 }
 
 body {
-  margin: 0;
-  font-family: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  text-align: left;
-  background-color: #fff;
+    font-family: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -10251,14 +10256,36 @@ footer .copyright {
   text-align: center;
 }
 
+
 header.masthead {
-  margin-bottom: 50px;
-  background: no-repeat center center;
-  background-color: #6c757d;
-  background-attachment: scroll;
-  position: relative;
-  background-size: cover;
+    margin-bottom: 50px;
+    background: no-repeat center center;
+    background-color: #6c757d;
+    background-attachment: scroll;
+    position: relative;
+    background-size: cover;
 }
+
+@media(min-width: 851px) {
+    header.masthead {
+        background-image: url('//i.ibb.co/Y00pYxH/Banner.png') !important;
+    }
+}
+
+
+@media(max-width: 850px) {
+    header.masthead {
+        background-image: url('//i.ibb.co/3BxDnxr/Bannermd.png');
+    }
+}
+
+@media(max-width: 450px) {
+    header.masthead {
+        background-image: url('//i.ibb.co/Gxjryyj/bannersm.png');
+    }
+}
+
+
 header.masthead .overlay {
   position: absolute;
   top: 0;
@@ -10381,7 +10408,7 @@ header.masthead .post-heading .meta a {
 
 .form-signin {
     width: 100%;
-    max-width: 330px;
+    max-width: 750px;
     padding: 15px;
     margin: 0 auto;
 }

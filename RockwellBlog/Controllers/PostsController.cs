@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using RockwellBlog.Services;
 
 namespace RockwellBlog.Controllers
 {
+    [Authorize]
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -65,6 +67,7 @@ namespace RockwellBlog.Controllers
         }
 
         // GET: Posts/Create
+        [AllowAnonymous]
         public IActionResult Create()
         {
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description");
@@ -100,6 +103,7 @@ namespace RockwellBlog.Controllers
         }
 
         // GET: Posts/Edit/5
+        [AllowAnonymous]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -153,6 +157,7 @@ namespace RockwellBlog.Controllers
         }
 
         // GET: Posts/Delete/5
+        [AllowAnonymous]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
