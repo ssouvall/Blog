@@ -13,7 +13,8 @@ namespace RockwellBlog.Data
             : base(options)
         {
         }
-        public DbSet<RockwellBlog.Models.Blog> Blogs { get; set; }
-        public DbSet<RockwellBlog.Models.Post> Posts { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comment { get; set; }
     }
 }

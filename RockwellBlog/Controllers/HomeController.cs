@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RockwellBlog.Data;
 using RockwellBlog.Models;
+using RockwellBlog.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,19 +16,28 @@ namespace RockwellBlog.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IBlogImageService _blogImageService;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IBlogImageService blogImageService)
         {
             _logger = logger;
             _context = context;
+            _blogImageService = blogImageService;
         }
 
         public async Task<IActionResult> Index()
         {
+
             //Load the view with all blog data
             //must inject ApplicationDbContext _context first then create an instance of it in HomeController
+
             var allBlogs = await _context.Blogs.ToListAsync();
-            return View(allBlogs);
+
+            ViewData["HeaderText"] = "Hi, I'm Stephen Souvall.";
+            ViewData["SubText"] = "This is my blog.";
+            ViewData["HeaderImage"] = "img/Banner.png";
+
+            return View(allBlogs); 
         }
 
         public IActionResult Privacy()

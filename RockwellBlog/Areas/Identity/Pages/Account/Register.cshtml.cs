@@ -104,7 +104,7 @@ namespace RockwellBlog.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-               ;
+               
                 var user = new BlogUser
                 {
                     FirstName = Input.FirstName,

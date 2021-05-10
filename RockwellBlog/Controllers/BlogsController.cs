@@ -14,7 +14,7 @@ using RockwellBlog.Services;
 
 namespace RockwellBlog.Controllers
 {
-    [Authorize]
+    [Authorize ]
     public class BlogsController : Controller
     {
         private readonly ApplicationDbContext _context;

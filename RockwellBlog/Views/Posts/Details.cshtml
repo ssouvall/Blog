@@ -1,67 +1,76 @@
 ﻿@model RockwellBlog.Models.Post
+@using RockwellBlog.Services
+@inject IBlogImageService _blogImageService
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                @*<h1>@Model.Title</h1>
+                    <h3>@Model.Abstract</h3>
+                    <p><em>@Model.Created</em></p>
+                    <p><em>@Model.Updated</em></p>*@
+                <p>  @Html.Raw(Model.Content)  </p>
+            </div>
+        </div>
+    </div>
+</article>
 
-<div>
-    <h4>Post</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Abstract)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Abstract)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class = "col-sm-10">
-            @*@Html.DisplayFor(model => model.Content)*@
-            @Html.Raw(Model.Content)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Slug)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Slug)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PublishState)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PublishState)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Blog)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Blog.Description)
-        </dd>
-    </dl>
+<div class="overlay">
+    @*prompt the anonymous user to login to add a comment*@
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <hr />
+        <a class="btn btn-dark btn-block btn-sm" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Details", "Posts", new { id = Model.Id })">Login to add a comment</a>
+        <hr />
+    }
+    else
+    {
+        //if you are loggin in I will show you an add comment form
+
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <form asp-action="Create" asp-controller="Comments" method="post">
+                @*----which post did it come from...?-----*@
+                <input type="hidden" name="PostId" value="@Model.Id" />
+                @*----------*@
+                <h5 class="text-center">ADD A COMMENT</h5>
+                <textarea class="form-control mb-3" name="Body" rows="10"></textarea>
+                <button type="submit" class="btn btn-dark btn-block btn-sm">Submit!</button>
+            </form>
+        </div>
+    }
+
+    <div class="col-lg-8 col-md-10 mx-auto">
+
+        <hr />
+        @*show user comments*@
+        <div class="btn-sm btn-dark btn-block w-100">@Model.Comments.Count Comment(s)</div>
+
+        @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+        {
+            <div class="row">
+                <div class="media border mr-3 ml-3 p-3 w-100">
+                    <img src="@_blogImageService.DecodeImage(comment.Author.ImageData, comment.Author.ContentType)" alt="@comment.Author.FullName" class="mr-3 mt-3 rounded-circle" style="width:60px;">
+                    <div class="media-body">
+                        <h4>@comment.Author.FullName <small><i>Posted on @comment.Created.ToString("MMM dd, yyyy")</i></small></h4>
+                        <p>@comment.Body</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="mt-3">
+            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+
+    </div>
+
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+

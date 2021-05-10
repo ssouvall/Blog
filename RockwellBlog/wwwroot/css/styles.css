@@ -10266,7 +10266,7 @@ header.masthead {
     background-size: cover;
 }
 
-@media(min-width: 851px) {
+/*@media(min-width: 851px) {
     header.masthead {
         background-image: url('//i.ibb.co/Y00pYxH/Banner.png') !important;
     }
@@ -10283,7 +10283,7 @@ header.masthead {
     header.masthead {
         background-image: url('//i.ibb.co/Gxjryyj/bannersm.png');
     }
-}
+}*/
 
 
 header.masthead .overlay {
@@ -10329,7 +10329,7 @@ header.masthead .site-heading .subheading {
 @media only screen and (min-width: 768px) {
   header.masthead .page-heading h1,
 header.masthead .site-heading h1 {
-    font-size: 80px;
+    /*font-size: 80px;*/
   }
 }
 header.masthead .post-heading h1 {

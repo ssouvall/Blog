@@ -54,5 +54,6 @@ namespace RockwellBlog.Models
         //referenced by the BlogId. Creates new instance of blog.
         //brings in the entire blog record represented by the BlogId reference
         public virtual Blog Blog { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
     }
 }

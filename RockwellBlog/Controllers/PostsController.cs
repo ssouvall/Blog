@@ -13,7 +13,7 @@ using RockwellBlog.Services;
 
 namespace RockwellBlog.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,6 +27,7 @@ namespace RockwellBlog.Controllers
             _configuration = configuration;
         }
 
+        [AllowAnonymous]
         public async Task<ActionResult> BlogPostIndex(int? id)
         {
             if (id == null)
@@ -37,16 +38,19 @@ namespace RockwellBlog.Controllers
             //Where is like filter. Going to database(_context), going to the Posts table, getting back all posts with the blogId equal to id.
             var blogPosts = await _context.Posts.Where(p => p.BlogId == id).ToListAsync();
             //specify which view to redirect to, otherwise it will redirect to BlogPostIndex which doesn't exist
+
             return View("Index", blogPosts);
         }
 
         // GET: Posts
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Posts.Include(p => p.Blog);
             return View(await applicationDbContext.ToListAsync());
         }
 
+        [AllowAnonymous]
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -57,11 +61,18 @@ namespace RockwellBlog.Controllers
 
             var post = await _context.Posts
                 .Include(p => p.Blog)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
                 return NotFound();
             }
+
+            ViewData["HeaderText"] = post.Title;
+            ViewData["SubText"] = post.Abstract;
+            ViewData["HeaderImage"] = _blogImageService.DecodeImage(post.ImageData, post.ContentType);
+            ViewData["AuthorText"] = $"Created by Stephen Souvall on {post.Created}";
 
             return View(post);
         }

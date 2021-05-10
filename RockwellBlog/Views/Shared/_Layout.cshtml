@@ -53,17 +53,20 @@
     </nav>
 
     <!-- Page Header-->
-    <header class="masthead">
+    <header class="masthead" style="background-image: url(@ViewData["HeaderImage"])">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-10 mx-auto">
                     <div class="site-heading">
-                        <h3 class="text-left intro-text">
+                        <h1>@ViewData["HeaderText"]</h1>
+                        <span class="subheading">@ViewData["SubText"]</span>
+                        <span><em>@ViewData["AuthorText"]</em></span>
+                        @*<h3 class="text-left intro-text">
                             function sayHello () { <br /><br />
-                            return "Hi, I'm Stephen Souvall. This is my blog." <br /><br />
+                            return "Hi, I'm Stephen Souvall. This is my blog."; <br /><br />
                             }
-                        </h3>
+                        </h3>*@
                     </div>
                 </div>
             </div>
