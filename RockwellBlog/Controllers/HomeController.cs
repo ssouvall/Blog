@@ -36,6 +36,13 @@ namespace RockwellBlog.Controllers
             ViewData["HeaderText"] = "Hi, I'm Stephen Souvall.";
             ViewData["SubText"] = "This is my blog.";
             ViewData["HeaderImage"] = "img/Banner.png";
+            ViewData["FeaturedImage"] = "img/home-bg.jpg";
+            ViewData["PostId"] = 1;
+            ViewData["PostTitle"] = "New Post";
+            ViewData["PostDescription"] = "Posts about Cool Things";
+            ViewData["PostedDate"] = "05/10/2021";
+
+            
 
             return View(allBlogs); 
         }

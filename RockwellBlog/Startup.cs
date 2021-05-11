@@ -45,6 +45,7 @@ namespace RockwellBlog
 
             services.AddScoped<IBlogImageService, BasicFileService>();
             services.AddScoped<DataService>();
+            services.AddScoped<BasicSlugService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +72,11 @@ namespace RockwellBlog
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "SEO_Route",
+                    pattern: "StephenSouvallBlog/{slug}",
+                    defaults: new { controller = "Posts", action = "Details" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

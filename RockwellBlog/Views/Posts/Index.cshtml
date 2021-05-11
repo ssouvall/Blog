@@ -18,17 +18,17 @@
             @foreach (var post in Model)
             {
                 <div class="post-preview col-lg-4 col-md-6 col-sm-12">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card mb-5" style="width: 18rem;">
                         <img class="post-img img-fluid" src="@_blogImageService.DecodeImage(post.ImageData, post.ContentType)" alt="post image" />
                         <div class="card-body">
-                            <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">
+                            <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">
                                 <h5 class="card-title">@post.Title</h5>
                                 <p class="post-subtitle card-text">@post.Abstract</p>
                                 <p class="post-meta card-text">Posted by Stephen Souvall on @post.Created.ToString("MMM dd, yyyy")</p>
                             </a>
                             <div class="row">
                                 <div class="col">
-                                    <a class="btn btn-primary mt-5 ml-5" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">Read Post</a>
+                                    <a class="btn btn-primary mt-5 ml-5" asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">Read Post</a>
                                 </div>
                             </div>
                         </div>

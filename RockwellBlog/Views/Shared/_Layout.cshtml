@@ -16,6 +16,8 @@
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
     <!--Summernote CSS-->
     <link href="~/css/summernote-bs4.min.css" rel="stylesheet" />
+    <!--Bootstrap Toggle-->
+    <link href="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="~/css/styles.css" rel="stylesheet" />
 
@@ -63,10 +65,10 @@
                         <span class="subheading">@ViewData["SubText"]</span>
                         <span><em>@ViewData["AuthorText"]</em></span>
                         @*<h3 class="text-left intro-text">
-                            function sayHello () { <br /><br />
-                            return "Hi, I'm Stephen Souvall. This is my blog."; <br /><br />
-                            }
-                        </h3>*@
+                                function sayHello () { <br /><br />
+                                return "Hi, I'm Stephen Souvall. This is my blog."; <br /><br />
+                                }
+                            </h3>*@
                     </div>
                 </div>
             </div>
@@ -127,6 +129,8 @@
         });
     </script>
     <script src="~/js/summernote-bs4.min.js"></script>
+    <!--Bootstrap Toggle-->
+    <script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <!-- Core theme JS-->
     <script src="~/js/scripts.js"></script>
     @await RenderSectionAsync("Scripts", required: false)

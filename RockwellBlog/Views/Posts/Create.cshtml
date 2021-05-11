@@ -42,6 +42,12 @@
             <span asp-validation-for="PublishState" class="text-danger"></span>
         </div>
         <div class="form-group">
+            <span>
+                <label asp-for="IsFeatured" class="sr-only control-label">Feature This Post?</label>
+                <input asp-for="IsFeatured" type="checkbox" data-toggle="toggle" data-on="Featured" data-off="Not Featured" data-width="200" data-height="25">
+            </span>
+        </div>
+        <div class="form-group">    
             <input type="submit" value="Create" class="btn btn-primary" />
         </div>
         <div>
@@ -56,58 +62,3 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
-
-
-
-@*<h1>Create</h1>
-
-<h4>Post</h4>
-<hr />
-<div class="row">
-    <div class="col-md-8">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="BlogId" class="control-label"></label>
-                <select asp-for="BlogId" class="form-control" asp-items="ViewBag.BlogId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Abstract" class="control-label"></label>
-                <input asp-for="Abstract" class="form-control" />
-                <span asp-validation-for="Abstract" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <textarea asp-for="Content" rows="10" class="form-control"></textarea>
-            </div>
-            <div class="form-group">
-                <label asp-for="PublishState" class="control-label"></label>
-                <select asp-for="PublishState" class="form-control" asp-items="@Html.GetEnumSelectList<PublishState>()"></select>
-                <span asp-validation-for="PublishState" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageFile"></label>
-                <div class="custom-file">
-                    <input asp-for="ImageFile" type="file" class="form-control-file custom-file-input" />
-                    <label class="control-label custom-file-label">Choose</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}*@

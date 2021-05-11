@@ -19,12 +19,14 @@ namespace RockwellBlog.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IBlogImageService _blogImageService;
         private readonly IConfiguration _configuration;
+        private readonly BasicSlugService _slugService;
 
-        public PostsController(ApplicationDbContext context, IBlogImageService blogImageService, IConfiguration configuration)
+        public PostsController(ApplicationDbContext context, IBlogImageService blogImageService, IConfiguration configuration, BasicSlugService slugService)
         {
             _context = context;
             _blogImageService = blogImageService;
             _configuration = configuration;
+            _slugService = slugService;
         }
 
         [AllowAnonymous]
@@ -39,6 +41,12 @@ namespace RockwellBlog.Controllers
             var blogPosts = await _context.Posts.Where(p => p.BlogId == id).ToListAsync();
             //specify which view to redirect to, otherwise it will redirect to BlogPostIndex which doesn't exist
 
+            var blog = await _context.Blogs.FirstOrDefaultAsync(m => m.Id == id);
+
+            ViewData["HeaderText"] = blog.Name;
+            ViewData["SubText"] = blog.Description;
+            ViewData["HeaderImage"] = _blogImageService.DecodeImage(blog.ImageData, blog.ContentType);
+
             return View("Index", blogPosts);
         }
 
@@ -52,9 +60,9 @@ namespace RockwellBlog.Controllers
 
         [AllowAnonymous]
         // GET: Posts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string slug)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
@@ -63,7 +71,7 @@ namespace RockwellBlog.Controllers
                 .Include(p => p.Blog)
                 .Include(p => p.Comments)
                 .ThenInclude(c => c.Author)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Slug == slug);
             if (post == null)
             {
                 return NotFound();
@@ -90,7 +98,7 @@ namespace RockwellBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,PublishState,ImageFile")] Post post)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,PublishState,ImageFile,IsFeatured")] Post post)
         {
             if (ModelState.IsValid)
             {
@@ -105,6 +113,16 @@ namespace RockwellBlog.Controllers
                         _configuration["DefaultPostImage"].Split('.')[1] :
                         _blogImageService.ContentType(post.ImageFile);
 
+                //Slug stuff goes here
+                var slug = _slugService.UrlFriendly(post.Title);
+                if(!_slugService.IsUnique(slug))
+                {
+                    //I must now add a Model Error and inform the user of the problem
+                    ModelState.AddModelError("Title", "There is an issue with the title, please try again");
+                    return View(post);
+                }
+
+                post.Slug = slug;
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("BlogPostIndex", new { id = post.BlogId});
@@ -136,7 +154,7 @@ namespace RockwellBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,Updated,Slug,PublishState")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,Slug,PublishState,ImageData,ImageFile")] Post post)
         {
             if (id != post.Id)
             {
@@ -147,6 +165,27 @@ namespace RockwellBlog.Controllers
             {
                 try
                 {
+                    var newSlug = _slugService.UrlFriendly(post.Title);
+                    //Need to compare original slug with current slug
+                    if(post.Slug != newSlug)
+                    {
+                        if(!_slugService.IsUnique(newSlug))
+                        {
+                            ModelState.AddModelError("Title", "There is an issue with the title, please try again");
+                            return View(post);
+                        }
+
+                        post.Slug = newSlug;
+                    }
+
+                    if (post.ImageFile is not null)
+                    {
+                        post.ImageData = await _blogImageService.EncodeFileAsync(post.ImageFile);
+                        post.ContentType = _blogImageService.ContentType(post.ImageFile);
+                    }
+
+                    post.Updated = DateTime.Now;
+
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
@@ -161,8 +200,10 @@ namespace RockwellBlog.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Posts", new { post.Slug });
             }
+
+
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
             return View(post);
         }

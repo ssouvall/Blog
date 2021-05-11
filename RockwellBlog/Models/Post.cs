@@ -42,13 +42,15 @@ namespace RockwellBlog.Models
         [Display(Name = "Choose Blog Image")]
         public IFormFile ImageFile { get; set; }
 
-
+        [Display(Name = "Make Featured Post?")]
         public string Slug { get; set; }
         //need a way to record the state of a post (whether it's ready to be published/viewed). Maybe have preview mode, etc. Will use an enum for this.
         //access enum PublishState. Will create a dropdown with multiple options. Enum lives on its own and is a tool that can be used elsewhere.
         //by default in the database the enum stores the numerical value of the dropdown. Indexed from 0.
         
         public PublishState PublishState { get; set; }
+
+        public bool IsFeatured { get; set; }
 
         //navigational property for the child class
         //referenced by the BlogId. Creates new instance of blog.

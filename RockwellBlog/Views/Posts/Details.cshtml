@@ -20,13 +20,16 @@
     </div>
 </article>
 
-<div class="overlay">
     @*prompt the anonymous user to login to add a comment*@
     @if (!User.Identity.IsAuthenticated)
     {
+
+    <div class="col-lg-8 col-md-10 mx-auto">
         <hr />
         <a class="btn btn-dark btn-block btn-sm" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Details", "Posts", new { id = Model.Id })">Login to add a comment</a>
         <hr />
+    </div>
+
     }
     else
     {
@@ -69,8 +72,6 @@
         </div>
 
     </div>
-
-</div>
 
 
 
