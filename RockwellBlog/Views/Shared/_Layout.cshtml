@@ -64,6 +64,12 @@
                         <h1>@ViewData["HeaderText"]</h1>
                         <span class="subheading">@ViewData["SubText"]</span>
                         <span><em>@ViewData["AuthorText"]</em></span>
+
+                        @*This is where I will collect the search string from the user*@
+                        <form asp-action="SearchIndex" asp-controller="Posts" class="mt-5">
+                            <input class="form-control" type="text" name="SearchString" placeholder="Enter search term"/>
+                            <button type="submit" class="btn-sm btn-dark btn-block">Search</button>
+                        </form>
                         @*<h3 class="text-left intro-text">
                                 function sayHello () { <br /><br />
                                 return "Hi, I'm Stephen Souvall. This is my blog."; <br /><br />

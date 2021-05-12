@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace RockwellBlog.Controllers
 {
@@ -25,19 +26,24 @@ namespace RockwellBlog.Controllers
             _blogImageService = blogImageService;
         }
 
-        public async Task<IActionResult> Index()
+        //update image action to take in page number
+        public async Task<IActionResult> Index(int? page)
         {
+
+            var lpImageData = await _blogImageService.EncodeFileAsync("Banner.png");
+            ViewData["HeaderImage"] = _blogImageService.DecodeImage(lpImageData, "png");
+            ViewData["HeaderText"] = "Hi, I'm Stephen Souvall.";
+            ViewData["SubText"] = "This is my blog.";
 
             //Load the view with all blog data
             //must inject ApplicationDbContext _context first then create an instance of it in HomeController
 
-            var allBlogs = await _context.Blogs.ToListAsync();
 
+            var pageNumber = page ?? 1;
+            var pageSize = 6;
 
-            ViewData["HeaderText"] = "Hi, I'm Stephen Souvall.";
-            ViewData["SubText"] = "This is my blog.";
-            ViewData["HeaderImage"] = "img/Banner.png";
-            
+            var allBlogs = await _context.Blogs.OrderByDescending(b => b.Created)
+                                                .ToPagedListAsync(pageNumber, pageSize);
 
             return View(allBlogs); 
         }

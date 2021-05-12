@@ -3,20 +3,10 @@
 @using X.PagedList.Web.Common
 @using RockwellBlog.Services
 @inject IBlogImageService _blogImageService
-@model IPagedList<Blog>
+@model IPagedList<Post>
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Search Results Page";
 }
-
-
-@*<div class="text-center mb-5">
-    <h3>FEATURED POSTS</h3>
-</div>
-<div class="row">
-    <h1>@ViewData["FeaturedTitle"]</h1>
-</div>
-
-<hr />*@
 
 <div class="text-center mb-5">
     <h3 class="mb-3">CATEGORIES</h3>
@@ -27,20 +17,20 @@
 </div>
 <div class="row">
     <!--Model is the IEnumerable and blog is the instance of Model-->
-    @foreach (var blog in Model)
+    @foreach (var post in Model)
     {
         <div class="post-preview col-lg-4 col-md-6 col-sm-12">
             <div class="card mb-5">
-                <img class="post-img img-fluid" src="@_blogImageService.DecodeImage(blog.ImageData, blog.ContentType)" alt="post image" />
+                <img class="post-img img-fluid" src="@_blogImageService.DecodeImage(post.ImageData, post.ContentType)" alt="post image" />
                 <div class="card-body">
-                    <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                        <h3 class="card-title">@blog.Name</h3>
-                        <p class="post-subtitle card-text">@blog.Description</p>
-                        <p class="post-meta card-text">Posted by Stephen Souvall on @blog.Created.ToString("MMM dd, yyyy")</p>
+                    <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-slug="@post.Slug">
+                        <h3 class="card-title">@post.Title</h3>
+                        <p class="post-subtitle card-text">@post.Abstract</p>
+                        <p class="post-meta card-text">Posted by Stephen Souvall on @post.Created.ToString("MMM dd, yyyy")</p>
                     </a>
                     <div class="row">
                         <div class="col">
-                            <a class="btn btn-primary text-center mt-5 d-flex align-items-center justify-content-center" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">View Blog</a>
+                            <a class="btn btn-primary text-center mt-5 d-flex align-items-center justify-content-center" asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">Read Details</a>
                         </div>
                     </div>
                 </div>
@@ -59,7 +49,7 @@
 
 <div class="row">
     <div class="col">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+        @Html.PagedListPager(Model, page => Url.Action("SearchIndex", new { page = page, searchString = ViewData["SearchString"] }),
            new PagedListRenderOptions
            {
                LiElementClasses = new string[] { "page-item" },

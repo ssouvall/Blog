@@ -32,7 +32,7 @@ namespace RockwellBlog
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Connection.GetConnectionString(Configuration)));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -47,6 +47,7 @@ namespace RockwellBlog
             services.AddScoped<DataService>();
             services.AddScoped<BasicSlugService>();
             services.AddScoped<IEmailSender, GmailEmailService>();
+            services.AddScoped<SearchService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

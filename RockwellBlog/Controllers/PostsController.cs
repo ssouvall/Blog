@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using RockwellBlog.Data;
 using RockwellBlog.Models;
 using RockwellBlog.Services;
+using X.PagedList;
 
 namespace RockwellBlog.Controllers
 {
@@ -20,13 +21,15 @@ namespace RockwellBlog.Controllers
         private readonly IBlogImageService _blogImageService;
         private readonly IConfiguration _configuration;
         private readonly BasicSlugService _slugService;
+        private readonly SearchService _searchService;
 
-        public PostsController(ApplicationDbContext context, IBlogImageService blogImageService, IConfiguration configuration, BasicSlugService slugService)
+        public PostsController(ApplicationDbContext context, IBlogImageService blogImageService, IConfiguration configuration, BasicSlugService slugService, SearchService searchService)
         {
             _context = context;
             _blogImageService = blogImageService;
             _configuration = configuration;
             _slugService = slugService;
+            _searchService = searchService;
         }
 
         [AllowAnonymous]
@@ -42,12 +45,11 @@ namespace RockwellBlog.Controllers
             //specify which view to redirect to, otherwise it will redirect to BlogPostIndex which doesn't exist
 
             var blog = await _context.Blogs.FirstOrDefaultAsync(m => m.Id == id);
-
             ViewData["HeaderText"] = blog.Name;
             ViewData["SubText"] = blog.Description;
             ViewData["HeaderImage"] = _blogImageService.DecodeImage(blog.ImageData, blog.ContentType);
 
-            return View("Index", blogPosts);
+            return View(blogPosts);
         }
 
         // GET: Posts
@@ -85,11 +87,28 @@ namespace RockwellBlog.Controllers
             return View(post);
         }
 
+        [AllowAnonymous]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> SearchIndex(int? page, string searchString)
+        {
+            ViewData["SearchString"] = searchString;
+            //Step 1: I need a set of results stemming from this searchString
+
+            var posts = _searchService.SearchContent(searchString);
+
+            var pageNumber = page ?? 1;
+            var pageSize = 6;
+            
+            return View(await posts.ToPagedListAsync(pageNumber, pageSize));
+        }
+
+
         // GET: Posts/Create
         [AllowAnonymous]
         public IActionResult Create()
         {
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description");
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
             return View();
         }
 
@@ -128,7 +147,7 @@ namespace RockwellBlog.Controllers
                 return RedirectToAction("BlogPostIndex", new { id = post.BlogId});
             }
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
-            return View(post);
+            return View("BlogPostIndex", post);
         }
 
         // GET: Posts/Edit/5
