@@ -33,7 +33,7 @@ namespace RockwellBlog.Controllers
             var lpImageData = await _blogImageService.EncodeFileAsync("Banner.png");
             ViewData["HeaderImage"] = _blogImageService.DecodeImage(lpImageData, "png");
             ViewData["HeaderText"] = "Hi, I'm Stephen Souvall.";
-            ViewData["SubText"] = "This is my blog. Test";
+            ViewData["SubText"] = "This is my blog.";
 
             //Load the view with all blog data
             //must inject ApplicationDbContext _context first then create an instance of it in HomeController
