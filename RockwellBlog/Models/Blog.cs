@@ -41,6 +41,7 @@ namespace RockwellBlog.Models
         [Display(Name="Choose Blog Image")]
         public IFormFile ImageFile { get; set; }
 
+
         //Navigational properties. This is the property that stores collection of blog posts
         //The virtual works with entity framework, allows "lazy loading" of data. Has to do with when related data is retrieved from the database. 
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();

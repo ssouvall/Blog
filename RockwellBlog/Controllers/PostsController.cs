@@ -132,7 +132,6 @@ namespace RockwellBlog.Controllers
         }
 
         // GET: Posts/Edit/5
-        [AllowAnonymous]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)

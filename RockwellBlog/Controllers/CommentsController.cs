@@ -62,10 +62,13 @@ namespace RockwellBlog.Controllers
 
                 comment.Created = DateTime.Now;
                 comment.AuthorId = _userManager.GetUserId(User);
+                
+                var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == comment.PostId);
+                var slug = post.Slug;
 
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Posts", new { id = comment.PostId});
+                return RedirectToAction("Details", "Posts", new { Slug = slug});
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
             ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);

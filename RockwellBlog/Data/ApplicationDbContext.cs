@@ -4,6 +4,7 @@ using RockwellBlog.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RockwellBlog.Data
 {
@@ -16,5 +17,6 @@ namespace RockwellBlog.Data
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comment { get; set; }
+
     }
 }
