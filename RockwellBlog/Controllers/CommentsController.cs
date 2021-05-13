@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +12,7 @@ using RockwellBlog.Models;
 
 namespace RockwellBlog.Controllers
 {
+    [Authorize]
     public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,6 +24,7 @@ namespace RockwellBlog.Controllers
             _userManager = userManager;
         }
 
+        [AllowAnonymous]
         // GET: Comments
         public async Task<IActionResult> Index()
         {
@@ -29,6 +32,7 @@ namespace RockwellBlog.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        [AllowAnonymous]
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -111,6 +115,21 @@ namespace RockwellBlog.Controllers
             {
                 try
                 {
+                    //For adding an edit notification to the text
+                    var user = await _userManager.GetUserAsync(User);
+                    string editNotice = $"Edited by: {user.FullName} <br />On: {DateTime.Now:MMM/dd/yyyy}<br />";
+                    //End of edit notification
+
+                    comment.Moderated = DateTime.Now;
+                    if (comment.ModeratedBody is not null)
+                    {
+                        comment.ModeratedBody = editNotice + comment.ModeratedBody;
+                        comment.Moderated = DateTime.Now;
+                    }
+                    else
+                    {
+                        comment.Body = editNotice + comment.Body;
+                    }
                     _context.Update(comment);
                     await _context.SaveChangesAsync();
                 }
@@ -125,7 +144,10 @@ namespace RockwellBlog.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == comment.PostId);
+                var slug = post.Slug;
+
+                return RedirectToAction("Details", "Posts", new { Slug = slug });
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
             ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);

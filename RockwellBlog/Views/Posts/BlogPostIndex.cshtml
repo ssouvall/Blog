@@ -1,6 +1,9 @@
-﻿@using RockwellBlog.Services
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@using RockwellBlog.Services
 @inject IBlogImageService _fileService
-@model IEnumerable<Post>
+@model IPagedList<Post>
 
 @{
     ViewData["Title"] = "Landing Page";
@@ -13,8 +16,10 @@
             <!--Model is the IEnumerable and blog is the instance of Model-->
             @foreach (var post in Model)
             {
-                <div class="post-preview col-lg-4 col-md-6 col-sm-12">
-                    <div class="card mb-5" style="width: 18rem;">
+                @*<div class="post-preview col-lg-4 col-md-6 col-sm-12">*@
+                <div class="post-preview col-12">
+                    @*<div class="card mb-5" style="width: 18rem;">*@
+                    <div class="card mb-5">
                         <img class="post-img img-fluid" src="@_fileService.DecodeImage(post.ImageData, post.ContentType)" alt="post image" />
                         <div class="card-body">
                             <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">
@@ -24,7 +29,7 @@
                             </a>
                             <div class="row">
                                 <div class="col">
-                                    <a class="btn btn-primary mt-5 ml-5" asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">Read Post</a>
+                                    <a class="btn btn-primary btn-block mt-5" asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">Read Post</a>
                                 </div>
                             </div>
                         </div>
@@ -34,7 +39,23 @@
                 <hr />
             }
         </div>
-        <!-- Pager-->
-        <div class="mt-5 mr-5 clearfix float-right"><a class="btn btn-primary ml-3" href="#!">Older Posts →</a></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col h3">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+           new PagedListRenderOptions
+           {
+               LiElementClasses = new string[] { "page-item" },
+               PageClasses = new string[] { "page-link" }
+           }
+
+      )
     </div>
 </div>

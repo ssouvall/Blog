@@ -33,15 +33,21 @@ namespace RockwellBlog.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> BlogPostIndex(int? id)
+        public async Task<ActionResult> BlogPostIndex(int? id, int? page)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
+            var pageNumber = page ?? 1;
+            var pageSize = 3;
+
             //Where is like filter. Going to database(_context), going to the Posts table, getting back all posts with the blogId equal to id.
-            var blogPosts = await _context.Posts.Where(p => p.BlogId == id).ToListAsync();
+            //var blogPosts = await _context.Posts.Where(p => p.BlogId == id).ToListAsync();
+            var blogPosts = await _context.Posts.Where(p => p.BlogId == id)
+                                                .OrderByDescending(b => b.Created)
+                                                .ToPagedListAsync(pageNumber, pageSize);
             //specify which view to redirect to, otherwise it will redirect to BlogPostIndex which doesn't exist
 
             var blog = await _context.Blogs.FirstOrDefaultAsync(m => m.Id == id);
@@ -83,6 +89,9 @@ namespace RockwellBlog.Controllers
             ViewData["SubText"] = post.Abstract;
             ViewData["HeaderImage"] = _blogImageService.DecodeImage(post.ImageData, post.ContentType);
             ViewData["AuthorText"] = $"Created by Stephen Souvall on {post.Created}";
+            //ViewData["ModerationType"] = new SelectList(_context.Comment, "Id", "ModerationType");
+
+
 
             return View(post);
         }
@@ -163,6 +172,7 @@ namespace RockwellBlog.Controllers
             {
                 return NotFound();
             }
+            ViewData["HeaderImage"] = _blogImageService.DecodeImage(post.ImageData, post.ContentType);
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
             return View(post);
         }
@@ -172,7 +182,7 @@ namespace RockwellBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,Slug,PublishState,ImageData,ImageFile")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,Slug,PublishState,ImageData,ImageFile,ContentType")] Post post)
         {
             if (id != post.Id)
             {

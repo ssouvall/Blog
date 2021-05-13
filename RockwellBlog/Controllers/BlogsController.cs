@@ -108,7 +108,7 @@ namespace RockwellBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created,Updated")] Blog blog, IFormFile NewBlogImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created,Updated,ImageData,ContentType")] Blog blog, IFormFile NewBlogImage)
         {
             if (id != blog.Id)
             {
