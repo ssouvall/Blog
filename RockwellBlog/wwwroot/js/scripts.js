@@ -54,7 +54,3 @@ if (window.innerWidth < 800) {
 } else {
     masthead.classList.remove("small-banner");
 };
-
-if (masthead.style.backgroundImage == "url()"){
-    masthead.classList.add("small-banner");
-}
