@@ -44,3 +44,12 @@
     }
 
 })(jQuery); // End of use strict
+
+//change header image based on screen size
+const masthead = document.getElementById("masthead");
+
+if (window.innerWidth < 800) {
+    masthead.classList.add("small-banner");
+} else {
+    masthead.classList.remove("small-banner");
+};

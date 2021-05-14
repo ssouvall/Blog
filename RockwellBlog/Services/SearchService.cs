@@ -24,17 +24,18 @@ namespace RockwellBlog.Services
             // the user does not supply a search string
             var result = _context.Posts.Where(p => p.PublishState == PublishState.ProductionReady);
 
-            if (string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
-
-                result = result.Where(p => p.Title.Contains(searchString) ||
-                                            p.Abstract.Contains(searchString) ||
-                                            p.Content.Contains(searchString) ||
+                searchString = searchString.ToLower();
+                result = result.Where(p => p.Title.ToLower().Contains(searchString) ||
+                                            p.Abstract.ToLower().Contains(searchString) ||
+                                            p.Content.ToLower().Contains(searchString) ||
                                             p.Comments.Any(c => c.Moderated == null &&
-                                                                c.Body.Contains(searchString) ||
-                                                                c.ModeratedBody.Contains(searchString) ||
-                                                                c.Author.FullName.Contains(searchString) ||
-                                                                c.Author.Email.Contains(searchString)));
+                                                                c.Body.ToLower().Contains(searchString) ||
+                                                                c.ModeratedBody.ToLower().Contains(searchString) ||
+                                                                c.Author.FirstName.ToLower().Contains(searchString) ||
+                                                                c.Author.LastName.ToLower().Contains(searchString) ||
+                                                                c.Author.Email.ToLower().Contains(searchString)));
 
             }
 

@@ -10440,3 +10440,8 @@ header.masthead .post-heading .meta a {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
     }
+
+
+.small-banner {
+    background-image: url('//i.ibb.co/Gxjryyj/bannersm.png')!important;
+}

@@ -13,7 +13,10 @@
     <h3>FEATURED POSTS</h3>
 </div>
 <div class="row">
-    <h1>@ViewData["FeaturedTitle"]</h1>
+    @foreach (var blog in Model)
+            {
+                <h1>@blog.Posts.</h1>
+            }
 </div>
 
 <hr />*@
@@ -37,6 +40,7 @@
                     <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
                         <h3 class="card-title">@blog.Name</h3>
                         <p class="post-subtitle card-text">@blog.Description</p>
+                        <p class="post-subtitle card-text">Number of Posts: @blog.Posts.Count</p>
                         <p class="post-meta card-text">Posted by Stephen Souvall on @blog.Created.ToString("MMM dd, yyyy")</p>
                     </a>
                     <div class="row">

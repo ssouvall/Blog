@@ -57,6 +57,8 @@ namespace RockwellBlog.Controllers
         // GET: Blogs/Create
         public IActionResult Create()
         {
+            ViewData["HeaderImage"] = "//i.ibb.co/Y00pYxH/Banner.png";
+            ViewData["HeaderText"] = "Create a New Category";
             return View();
         }
 

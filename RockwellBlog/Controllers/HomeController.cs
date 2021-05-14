@@ -29,7 +29,7 @@ namespace RockwellBlog.Controllers
         //update image action to take in page number
         public async Task<IActionResult> Index(int? page)
         {
-
+            
             var lpImageData = await _blogImageService.EncodeFileAsync("Banner.png");
             ViewData["HeaderImage"] = _blogImageService.DecodeImage(lpImageData, "png");
             ViewData["HeaderText"] = "Hi, I'm Stephen Souvall.";
@@ -43,6 +43,7 @@ namespace RockwellBlog.Controllers
             var pageSize = 3;
 
             var allBlogs = await _context.Blogs.OrderByDescending(b => b.Created)
+                                                .Include(b => b.Posts)
                                                 .ToPagedListAsync(pageNumber, pageSize);
 
             return View(allBlogs); 

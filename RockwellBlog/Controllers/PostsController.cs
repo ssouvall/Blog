@@ -117,6 +117,8 @@ namespace RockwellBlog.Controllers
         [AllowAnonymous]
         public IActionResult Create()
         {
+            ViewData["HeaderImage"] = "//i.ibb.co/Y00pYxH/Banner.png";
+            ViewData["HeaderText"] = "Let's Create a Post.";
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
             return View();
         }
@@ -155,6 +157,7 @@ namespace RockwellBlog.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("BlogPostIndex", new { id = post.BlogId});
             }
+            
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
             return View("BlogPostIndex", post);
         }
@@ -173,7 +176,7 @@ namespace RockwellBlog.Controllers
                 return NotFound();
             }
             ViewData["HeaderImage"] = _blogImageService.DecodeImage(post.ImageData, post.ContentType);
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             return View(post);
         }
 
@@ -232,7 +235,7 @@ namespace RockwellBlog.Controllers
             }
 
 
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             return View(post);
         }
 

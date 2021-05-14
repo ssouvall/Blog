@@ -10,8 +10,8 @@ using RockwellBlog.Data;
 namespace RockwellBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210507204941_007")]
-    partial class _007
+    [Migration("20210514181642_001")]
+    partial class _001
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -269,6 +269,48 @@ namespace RockwellBlog.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("RockwellBlog.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("Moderated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ModeratedBody")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("ModerationType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ModeratorId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("ModeratorId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comment");
+                });
+
             modelBuilder.Entity("RockwellBlog.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -296,6 +338,9 @@ namespace RockwellBlog.Data.Migrations
 
                     b.Property<byte[]>("ImageData")
                         .HasColumnType("bytea");
+
+                    b.Property<bool>("IsFeatured")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("PublishState")
                         .HasColumnType("integer");
@@ -369,6 +414,29 @@ namespace RockwellBlog.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("RockwellBlog.Models.Comment", b =>
+                {
+                    b.HasOne("RockwellBlog.Models.BlogUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("RockwellBlog.Models.BlogUser", "Moderator")
+                        .WithMany()
+                        .HasForeignKey("ModeratorId");
+
+                    b.HasOne("RockwellBlog.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Moderator");
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("RockwellBlog.Models.Post", b =>
                 {
                     b.HasOne("RockwellBlog.Models.Blog", "Blog")
@@ -383,6 +451,11 @@ namespace RockwellBlog.Data.Migrations
             modelBuilder.Entity("RockwellBlog.Models.Blog", b =>
                 {
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("RockwellBlog.Models.Post", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

@@ -55,7 +55,7 @@
     </nav>
 
     <!-- Page Header-->
-    <header class="masthead" style="background-image: url(@ViewData["HeaderImage"])">
+    <header class="masthead" id="masthead" style="background-image: url(@ViewData["HeaderImage"]);">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
@@ -66,9 +66,13 @@
                         <span><em>@ViewData["AuthorText"]</em></span>
 
                         @*This is where I will collect the search string from the user*@
-                        <form asp-action="SearchIndex" asp-controller="Posts" class="mt-5">
-                            <input class="form-control" type="text" name="SearchString" placeholder="Enter search term"/>
-                            <button type="submit" class="btn-sm btn-dark btn-block">Search</button>
+                        <form asp-action="SearchIndex" asp-controller="Posts" method="get" class="mt-5">
+                            <div class="input-group">
+                                <input class="form-control" autocomplete="off" type="text" name="SearchString" placeholder="Enter search term" />
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn-sm btn-primary border border-primary">Search</button>
+                                </div>
+                            </div>
                         </form>
                         @*<h3 class="text-left intro-text">
                                 function sayHello () { <br /><br />
