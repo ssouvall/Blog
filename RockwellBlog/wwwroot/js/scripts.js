@@ -46,6 +46,7 @@
 })(jQuery); // End of use strict
 
 //change header image based on screen size
+
 const masthead = document.getElementById("masthead");
 
 if (window.innerWidth < 800) {
@@ -53,3 +54,7 @@ if (window.innerWidth < 800) {
 } else {
     masthead.classList.remove("small-banner");
 };
+
+if (masthead.style.backgroundImage == "url()"){
+    masthead.classList.add("small-banner");
+}
