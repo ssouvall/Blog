@@ -40,7 +40,7 @@ namespace RockwellBlog.Controllers
 
 
             var pageNumber = page ?? 1;
-            var pageSize = 6;
+            var pageSize = 3;
 
             var allBlogs = await _context.Blogs.OrderByDescending(b => b.Created)
                                                 .ToPagedListAsync(pageNumber, pageSize);
