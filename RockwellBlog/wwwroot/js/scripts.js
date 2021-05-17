@@ -54,3 +54,12 @@ if (window.innerWidth < 800) {
 } else {
     masthead.classList.remove("small-banner");
 };
+
+
+//make carousel dynamic by adding "active" to first slide
+$(document).ready(function () {
+    $('.carousel-item').first().addClass('active');
+    $('.carouselExampleControls > li').first().addClass('active');
+});
+
+

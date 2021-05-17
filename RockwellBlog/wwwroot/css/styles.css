@@ -10402,7 +10402,7 @@ header.masthead .post-heading .meta a {
 
 .post-img {
     width: 100%;
-    height: 15rem;
+    height: 10rem;
     object-fit: cover;
 }
 
@@ -10445,3 +10445,33 @@ header.masthead .post-heading .meta a {
 .small-banner {
     background-image: url('//i.ibb.co/Gxjryyj/bannersm.png')!important;
 }
+
+.carousel-control-prev-icon {
+    background-image: url("//i.ibb.co/s28JkTS/Left-Arrow.png");
+    width: 3rem;
+    height: 3rem;
+    margin-right: 5rem;
+}
+
+.carousel-control-next-icon {
+    background-image: url("//i.ibb.co/L5vjfwc/Right-Arrow.png");
+    opacity: 1;
+    width: 3rem;
+    height: 3rem;
+    margin-left: 5rem;
+}
+
+@media(max-width: 1000px){
+    .carousel-control-prev-icon {
+        width: 2rem;
+        height: 2rem;
+        margin-right: 1rem;
+    }
+
+    .carousel-control-next-icon {
+        width: 2rem;
+        height: 2rem;
+        margin-left: 1rem;
+    }
+}
+

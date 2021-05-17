@@ -2,39 +2,68 @@
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
 @using RockwellBlog.Services
+@using System.Text.RegularExpressions
 @inject IBlogImageService _blogImageService
 @model IPagedList<Blog>
 @{
     ViewData["Title"] = "Home Page";
 }
 <div class="text-center mb-5">
-    <h3 class="mb-3">FEATURED POSTS</h3>
+    <h3 class="mb-3"><u>FEATURED POSTS</u></h3>
 </div>
 
-@foreach(var blog in Model)
+<div class="container">
+    <div id="carouselControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+
+            @foreach (var blog in Model)
             {
-                foreach(var post in blog.Posts.Where(p => p.IsFeatured))
+                foreach (var post in blog.Posts.Where(p => p.IsFeatured))
                 {
-                    <div class="row shadow border">
-                        <div class="col-md-3">
-                            <img src="@_blogImageService.DecodeImage(post.ImageData, post.ContentType)" class="img-fluid" alt="featured post image" />
-                        </div>
-                        <div class="col-md-9">
-                            <h3>@post.Title</h3>
-                            <p>@Html.Raw(post.Content)</p>
+                    <div class="carousel-item text-center border shadow mb-5 p-3">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <img src="@_blogImageService.DecodeImage(post.ImageData, post.ContentType)" class="d-block w-100 img-fluid p-3" alt="featured post image">
+                            </div>
+                            <div class="col-lg-6 p-3">
+                                <h3>@post.Title</h3>
+                                @{
+                                    string text = post.Content;
+                                    text = @Html.Raw(text).ToString();
+                                    string replaced = Regex.Replace(text, @"<[^>]*>", "").Substring(0, 200);
+                                }
+                                <p class="text-left pl-3 pr-3">@replaced  ...</p>
+                                <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug" class="btn-sm btn-primary btn-block rounded">Read Post</a>
+                            </div>
                         </div>
                     </div>
-                    
+
                 }
             }
+
+        </div>
+        <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon opacity-5" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon opacity-5" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
 
 <hr />
 
 <div class="text-center mb-5">
-    <h3 class="mb-3">CATEGORIES</h3>
+
     @if (User.Identity.IsAuthenticated)
     {
-        <a class="btn btn-primary text-decoration-none" asp-controller="Blogs" asp-action="Create">Create New <i class="fas fa-plus"></i></a>
+        <h3 class="mb-3"><u>CATEGORIES</u> <a class="btn btn-primary text-decoration-none rounded-circle add-category pl-2 pr-2 pt-1 pb-1" asp-controller="Blogs" asp-action="Create"><i class="fas fa-plus fa-2x"></i> </a></h3>
+    }
+    else
+    {
+        <h3 class="mb-3"><u>CATEGORIES</u></h3>
     }
 </div>
 <div class="row">
@@ -43,14 +72,13 @@
     {
         @*<div class="post-preview col-lg-4 col-md-6 col-sm-12">*@
         <div class="post-preview col-lg-4 col-md-6 col-sm-12">
-            <div class="card mb-5 shadow">
+            <div class="card mb-5 shadow text-center p-0">
                 <img class="post-img img-fluid" src="@_blogImageService.DecodeImage(blog.ImageData, blog.ContentType)" alt="post image" />
                 <div class="card-body">
                     <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
                         <h3 class="card-title">@blog.Name</h3>
                         <p class="post-subtitle card-text">@blog.Description</p>
                         <p class="post-subtitle card-text">Number of Posts: @blog.Posts.Count</p>
-                        <p class="post-meta card-text">Posted by Stephen Souvall on @blog.Created.ToString("MMM dd, yyyy")</p>
                     </a>
                     <div class="row">
                         <div class="col">
@@ -74,12 +102,13 @@
 <div class="row">
     <div class="col">
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
-           new PagedListRenderOptions
-           {
-               LiElementClasses = new string[] { "page-item" },
-               PageClasses = new string[] { "page-link" }
-           }
+            new PagedListRenderOptions
+            {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" }
+            }
 
-      )
+        )
     </div>
 </div>
+
