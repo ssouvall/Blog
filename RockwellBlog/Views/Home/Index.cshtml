@@ -9,11 +9,11 @@
     ViewData["Title"] = "Home Page";
 }
 <div class="text-center mb-5">
-    <h3 class="mb-3"><u>FEATURED POSTS</u></h3>
+    <h3 class="mb-5 mt-5"><u>FEATURED POSTS</u></h3>
 </div>
 
 <div class="container">
-    <div id="carouselControls" class="carousel slide" data-ride="carousel">
+    <div id="carouselControls" class="carousel slide mb-5 mt-5" data-ride="carousel">
         <div class="carousel-inner">
 
             @foreach (var blog in Model)
@@ -55,7 +55,7 @@
 
 <hr />
 
-<div class="text-center mb-5">
+<div class="text-center mb-5 mt-5">
 
     @if (User.Identity.IsAuthenticated)
     {
@@ -76,7 +76,7 @@
                 <img class="post-img img-fluid" src="@_blogImageService.DecodeImage(blog.ImageData, blog.ContentType)" alt="post image" />
                 <div class="card-body">
                     <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                        <h3 class="card-title mb-0">@blog.Name</h3>
+                        <h3 class="card-title mb-0 pt-2 pb-2">@blog.Name</h3>
                         @{
                             string catText = blog.Description;
                         }
@@ -96,7 +96,7 @@
                     </a>
                     <div class="row">
                         <div class="col">
-                            <a class="btn-sm btn-primary btn-block text-center d-flex align-items-center justify-content-center" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">Read Posts (@blog.Posts.Count)</a>
+                            <a class="btn-sm btn-dark btn-block text-center d-flex align-items-center justify-content-center" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">Read Posts (@blog.Posts.Count)</a>
                         </div>
                     </div>
                 </div>

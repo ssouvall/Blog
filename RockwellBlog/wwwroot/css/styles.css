@@ -4388,7 +4388,10 @@ input[type=button].btn-block {
 }
 
 .card-title {
-  margin-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    background: #0085A1;
+    border-top: 5px solid black;
+    border-bottom: 5px solid black;
 }
 
 .card-subtitle {
@@ -10480,6 +10483,7 @@ header.masthead .post-heading .meta a {
 }
 
 .featured-img {
-    height: 20rem;
+    max-height: 20rem;
     overflow: hidden;
+    object-fit: cover;
 }
