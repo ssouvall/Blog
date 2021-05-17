@@ -10475,3 +10475,11 @@ header.masthead .post-heading .meta a {
     }
 }
 
+.category-card {
+    max-height: 90%;
+}
+
+.featured-img {
+    height: 20rem;
+    overflow: hidden;
+}

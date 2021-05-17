@@ -23,7 +23,7 @@
                     <div class="carousel-item text-center border shadow mb-5 p-3">
                         <div class="row">
                             <div class="col-lg-6">
-                                <img src="@_blogImageService.DecodeImage(post.ImageData, post.ContentType)" class="d-block w-100 img-fluid p-3" alt="featured post image">
+                                <img src="@_blogImageService.DecodeImage(post.ImageData, post.ContentType)" class="d-block w-100 img-fluid p-3 featured-img" alt="featured post image">
                             </div>
                             <div class="col-lg-6 p-3">
                                 <h3>@post.Title</h3>
@@ -72,17 +72,31 @@
     {
         @*<div class="post-preview col-lg-4 col-md-6 col-sm-12">*@
         <div class="post-preview col-lg-4 col-md-6 col-sm-12">
-            <div class="card mb-5 shadow text-center p-0">
+            <div class="card category-card mb-5 shadow text-center p-0">
                 <img class="post-img img-fluid" src="@_blogImageService.DecodeImage(blog.ImageData, blog.ContentType)" alt="post image" />
                 <div class="card-body">
                     <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                        <h3 class="card-title">@blog.Name</h3>
-                        <p class="post-subtitle card-text">@blog.Description</p>
-                        <p class="post-subtitle card-text">Number of Posts: @blog.Posts.Count</p>
+                        <h3 class="card-title mb-0">@blog.Name</h3>
+                        @{
+                            string catText = blog.Description;
+                        }
+                        @if (catText.Length > 50)
+                        {
+                            <p class="post-subtitle card-text mt-3 mb-3">@catText.Substring(0, 50) ... </p>
+                        }
+                        else if (catText.Length <= 30)
+                        {
+                            <p class="post-subtitle card-text mt-3 mb-5">@catText </p>
+                        }
+                        else
+                        {
+                        <p class="post-subtitle card-text mt-3 mb-3">@catText </p>
+                        }
+
                     </a>
                     <div class="row">
                         <div class="col">
-                            <a class="btn btn-primary btn-block text-center mt-5 d-flex align-items-center justify-content-center" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">View Blog</a>
+                            <a class="btn-sm btn-primary btn-block text-center d-flex align-items-center justify-content-center" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">Read Posts (@blog.Posts.Count)</a>
                         </div>
                     </div>
                 </div>
