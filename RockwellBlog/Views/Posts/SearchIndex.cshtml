@@ -2,37 +2,45 @@
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
 @using RockwellBlog.Services
+@using System.Text.RegularExpressions
 @inject IBlogImageService _blogImageService
 @model IPagedList<Post>
 @{
-    ViewData["Title"] = "Search Results Page";
+    ViewData["Title"] = "Search Results";
 }
 
 <div class="text-center mb-5">
-    <h3 class="mb-3">CATEGORIES</h3>
-    @if (User.Identity.IsAuthenticated)
+    <h3 class="mb-3">@ViewData["Title"]</h3>
+</div>
+<div class="text-left mb-3">
+    <a class="btn-sm btn-primary text-decoration-none rounded mr-3" asp-controller="Home" asp-action="Index">Home <i class="fas fa-home"></i></a>
+    @if (User.IsInRole("Administrator"))
     {
-        <a class="btn btn-primary text-decoration-none" asp-controller="Blogs" asp-action="Create">Create New <i class="fas fa-plus"></i></a>
+        <a class="btn-sm btn-primary text-decoration-none rounded mr-3" asp-controller="Posts" asp-action="Create">New Post <i class="fas fa-plus"></i></a>
+        <a class="btn-sm btn-primary text-decoration-none rounded" asp-controller="Blogs" asp-action="Create">New Category <i class="fas fa-palette"></i></a>
     }
 </div>
+
 <div class="row">
     <!--Model is the IEnumerable and blog is the instance of Model-->
     @foreach (var post in Model)
     {
-        <div class="post-preview col-lg-4 col-md-6 col-sm-12">
-            <div class="card mb-5">
-                <img class="post-img img-fluid" src="@_blogImageService.DecodeImage(post.ImageData, post.ContentType)" alt="post image" />
-                <div class="card-body">
-                    <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-slug="@post.Slug">
-                        <h3 class="card-title">@post.Title</h3>
-                        <p class="post-subtitle card-text">@post.Abstract</p>
-                        <p class="post-meta card-text">Posted by Stephen Souvall on @post.Created.ToString("MMM dd, yyyy")</p>
-                    </a>
-                    <div class="row">
-                        <div class="col">
-                            <a class="btn btn-primary text-center mt-5 d-flex align-items-center justify-content-center" asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">Read Details</a>
-                        </div>
-                    </div>
+        <div class="text-center border shadow p-3">
+            <div class="row">
+                <div class="col-lg-6">
+                    <img src="@_blogImageService.DecodeImage(post.ImageData, post.ContentType)" class="d-block w-100 img-fluid p-3 featured-img" alt="featured post image">
+                </div>
+                <div class="col-lg-6">
+                    <h3>@post.Title</h3>
+                    @{
+                        string text = post.Content;
+                        text = @Html.Raw(text).ToString();
+                        string replaced = Regex.Replace(text, @"<[^>]*>", "").Substring(0, 200);
+                    }
+
+                    <p class="text-left pl-3 pr-3">@replaced  ...</p>
+                    <small class="post-meta card-text mb-5">Posted by Stephen Souvall on @post.Created.ToString("MMM dd, yyyy")</small>
+                    <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug" class="btn btn-primary btn-block rounded mt-3">Read Post</a>
                 </div>
             </div>
         </div>

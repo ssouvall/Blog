@@ -57,7 +57,7 @@
 
 <div class="text-center mb-5 mt-5">
 
-    @if (User.Identity.IsAuthenticated)
+    @if (User.IsInRole("Administrator"))
     {
         <h3 class="mb-3"><u>CATEGORIES</u> <a class="btn btn-primary text-decoration-none rounded-circle add-category pl-2 pr-2 pt-1 pb-1" asp-controller="Blogs" asp-action="Create"><i class="fas fa-plus fa-2x"></i> </a></h3>
     }
