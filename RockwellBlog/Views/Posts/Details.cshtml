@@ -9,14 +9,15 @@
     ViewData["Title"] = "Details";
 }
 
+
 <article>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
-                @*<h1>@Model.Title</h1>
-                    <h3>@Model.Abstract</h3>
-                    <p><em>@Model.Created</em></p>
-                    <p><em>@Model.Updated</em></p>*@
+                <div>
+                    <a class="btn-sm btn-primary text-decoration-none rounded mr-3" asp-controller="Home" asp-action="Index">Home <i class="fas fa-home"></i></a>
+                    <a class="btn-sm btn-primary text-decoration-none ml-auto rounded mr-3" asp-controller="Home" asp-action="Index">Home <i class="fas fa-home"></i></a>
+                </div>
                 <p>  @Html.Raw(Model.Content)  </p>
             </div>
         </div>
