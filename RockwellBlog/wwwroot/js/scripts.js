@@ -38,3 +38,4 @@ $(document).ready(function () {
 });
 
 
+//Summer Note - Responsive image fix        //$(document).ready(function () {        //    $("img").addClass("img-fluid");        //    $("img").css("max-width", "100%");        //    $("img").css("height", "auto");        //    $("img").css("width", "auto");        //    $("img").css("aspect-ratio", "auto");        //    $("img").parent("span").css("width", "auto");        //    $("img").parent("span").css("height", "auto");        //});

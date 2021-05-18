@@ -16,7 +16,12 @@
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div>
                     <a class="btn-sm btn-primary text-decoration-none rounded mr-3" asp-controller="Home" asp-action="Index">Home <i class="fas fa-home"></i></a>
-                    <a class="btn-sm btn-primary text-decoration-none ml-auto rounded mr-3" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@Model.BlogId">Back to Category <i class="far fa-arrow-alt-circle-left"></i></a>
+                    <a class="btn-sm btn-primary text-decoration-none mr-auto rounded mr-3" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@Model.BlogId">Back to Category <i class="far fa-arrow-alt-circle-left"></i></a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="btn-sm btn-secondary text-decoration-none ml-auto float-right rounded" asp-action="Edit" asp-route-id="@Model.Id">Edit <i class="fas fa-edit"></i></a>
+                        <a class="btn-sm btn-danger text-decoration-none ml-auto float-right rounded mr-3" type="button" data-toggle="modal" data-target="#deleteModal" asp-controller="Posts" asp-action="Delete" asp-route-id="@Model.BlogId">Delete <i class="fas fa-trash-alt"></i></a>
+                    }
                 </div>
                 <p>  @Html.Raw(Model.Content)  </p>
             </div>
@@ -24,9 +29,33 @@
     </div>
 </article>
 
-    @*prompt the anonymous user to login to add a comment*@
-    @if (!User.Identity.IsAuthenticated)
-    {
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this post?</p>
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Delete" class="btn btn-danger">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*prompt the anonymous user to login to add a comment*@
+@if (!User.Identity.IsAuthenticated)
+{
 
     <div class="col-lg-8 col-md-10 mx-auto">
         <hr />
@@ -34,22 +63,22 @@
         <hr />
     </div>
 
-    }
-    else
-    {
-        //if you are loggin in I will show you an add comment form
+}
+else
+{
+    //if you are loggin in I will show you an add comment form
 
-        <div class="col-lg-8 col-md-10 mx-auto">
-            <form asp-action="Create" asp-controller="Comments" method="post">
-                @*----which post did it come from...?-----*@
-                <input type="hidden" name="PostId" value="@Model.Id" />
-                @*----------*@
-                <h5 class="text-center">ADD A COMMENT</h5>
-                <textarea class="form-control mb-3" name="Body" rows="10"></textarea>
-                <button type="submit" class="btn btn-dark btn-block btn-sm">Submit!</button>
-            </form>
-        </div>
-    }
+    <div class="col-lg-8 col-md-10 mx-auto">
+        <form asp-action="Create" asp-controller="Comments" method="post">
+            @*----which post did it come from...?-----*@
+            <input type="hidden" name="PostId" value="@Model.Id" />
+            @*----------*@
+            <h5 class="text-center">ADD A COMMENT</h5>
+            <textarea class="form-control mb-3" name="Body" rows="10"></textarea>
+            <button type="submit" class="btn btn-dark btn-block btn-sm">Submit!</button>
+        </form>
+    </div>
+}
 
 <div class="col-lg-8 col-md-10 mx-auto">
 
@@ -65,15 +94,15 @@
                 <div class="media-body">
                     @if (comment.Moderated is null)
                     {
-                    <h4>@comment.Author.FullName <small><i>Posted on @comment.Created.ToString("MMM dd, yyyy")</i></small></h4>
-                    <p>@comment.Body</p>
+                        <h4>@comment.Author.FullName <small><i>Posted on @comment.Created.ToString("MMM dd, yyyy")</i></small></h4>
+                        <p>@comment.Body</p>
                     }
-                else
-                {
-                    @Html.Raw(comment.ModeratedBody)
+                    else
+                    {
+                        @Html.Raw(comment.ModeratedBody)
                         <p class="text-sm-center">@comment.Author.FirstName</p>
                         <p class="text-sm-center">This comment has been moderated because @comment.ModerationType</p>
-                }
+                    }
                     @if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || (comment.Moderated is null && userManager.GetUserId(User) == comment.AuthorId))
                     {
                         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit-@comment.Id">
@@ -135,16 +164,16 @@
                         </div>
                     }
                 </div>
-                </div>
             </div>
-            }
-
-            <div class="mt-3">
-                <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
-                <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@Model.BlogId">Back to List</a>
-            </div>
-            
         </div>
+    }
+
+    <div class="mt-3">
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@Model.BlogId">Back to List</a>
+    </div>
+
+</div>
 
 
 
