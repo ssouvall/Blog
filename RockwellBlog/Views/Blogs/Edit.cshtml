@@ -1,47 +1,41 @@
 ﻿@model RockwellBlog.Models.Blog
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Category";
 }
-
-<h1>Edit</h1>
-
-<h4>Blog</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="ImageData" />
-            <input type="hidden" asp-for="ContentType" />
-            <input type="hidden" asp-for="Created" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div class="text-center">
+    <form class="form-signin" asp-action="Edit" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ImageData" />
+        <input type="hidden" asp-for="ContentType" />
+        <input type="hidden" asp-for="Created" />
+        <img class="mb-4" src="~/img/create.png" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">@ViewData["Title"]</h1>
+        <div class="form-group">
+            <label class="sr-only control-label" asp-for="Name">Email address</label>
+            <input id="inputEmail" asp-for="Name" class="form-control" placeholder="Category Name" required autofocus>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="sr-only control-label" asp-for="Description">Description</label>
+            <input asp-for="Description" id="inputPassword" class="form-control" placeholder="Description" required>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ImageData"></label>
+            <div class="custom-file">
+                <input asp-for="ImageData" type="file" name="NewBlogImage" class="form-control-file custom-file-input" />
+                <label class="control-label custom-file-label"></label>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageData"></label>
-                <div class="custom-file">
-                    <input asp-for="ImageData" name="NewBlogImage" type="file" class="form-control-file custom-file-input" />
-                    <label class="control-label custom-file-label">Choose</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@Model.Id">Back to List</a>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+        <div>
+            <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@Model.Id">Back to List</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {

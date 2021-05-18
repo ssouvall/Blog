@@ -23,7 +23,9 @@
                         <a class="btn-sm btn-danger text-decoration-none ml-auto float-right rounded mr-3" type="button" data-toggle="modal" data-target="#deleteModal" asp-controller="Posts" asp-action="Delete" asp-route-id="@Model.BlogId">Delete <i class="fas fa-trash-alt"></i></a>
                     }
                 </div>
-                <p>  @Html.Raw(Model.Content)  </p>
+                <div class="border shadow pl-5 pr-5 mt-5 mb-5">
+                    <p>  @Html.Raw(Model.Content)  </p>
+                </div>
             </div>
         </div>
     </div>
