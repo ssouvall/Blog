@@ -21,14 +21,37 @@
         @foreach (var item in Model)
         {
             <a class="btn-sm btn-secondary text-decoration-none ml-auto float-right rounded" asp-controller="Blogs" asp-action="Edit" asp-route-id="@item.BlogId">Edit <i class="fas fa-edit"></i></a>
-            <a class="btn-sm btn-danger text-decoration-none ml-auto float-right rounded mr-3" type="button" data-toggle="modal" data-target="#deleteModal" asp-controller="Blogs" asp-action="Delete" asp-route-id="@item.BlogId">Delete <i class="fas fa-trash-alt"></i></a>
-                if (item.BlogId == item.BlogId)
-                {
-                    break;
-                }
+            <a class="btn-sm btn-danger text-decoration-none ml-auto float-right rounded mr-3" type="button" data-toggle="modal" data-target="#deleteCatModal" asp-controller="Blogs" asp-action="Delete" asp-route-id="@item.BlogId">Delete <i class="fas fa-trash-alt"></i></a>
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteCatModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this category?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <form asp-controller="Blogs" asp-action="Delete" asp-route-id="@item.BlogId">
+                                <input type="hidden" asp-for="@item.BlogId" />
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input type="submit" value="Delete" class="btn btn-danger">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            if (item.BlogId == item.BlogId)
+            {
+                break;
             }
-
         }
+
+    }
 </div>
 <hr />
 <div class="row">
@@ -76,3 +99,4 @@
       )
     </div>
 </div>
+

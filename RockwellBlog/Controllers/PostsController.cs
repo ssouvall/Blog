@@ -250,6 +250,7 @@ namespace RockwellBlog.Controllers
 
             var post = await _context.Posts
                 .Include(p => p.Blog)
+                .ThenInclude(b => b.Id)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
