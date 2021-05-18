@@ -144,7 +144,7 @@ namespace RockwellBlog.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("BlogPostIndex", "Posts", new { id = blog.Id });
             }
             return View(blog);
         }
