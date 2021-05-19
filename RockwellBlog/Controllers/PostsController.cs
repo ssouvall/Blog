@@ -115,11 +115,19 @@ namespace RockwellBlog.Controllers
 
         // GET: Posts/Create
         [AllowAnonymous]
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
+            if (id is not null)
+            {
+                ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", id);
+            }
+            else
+            {
+                ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
+            }
+
             ViewData["HeaderImage"] = "//i.ibb.co/Y00pYxH/Banner.png";
             ViewData["HeaderText"] = "Let's Create a Post.";
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
             return View();
         }
 

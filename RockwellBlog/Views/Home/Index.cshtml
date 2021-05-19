@@ -99,7 +99,7 @@
                             @if (User.IsInRole("Administrator"))
                             {
                                 <a class="btn-sm btn-dark btn-block text-center d-flex align-items-center justify-content-center" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">Read Posts (@blog.Posts.Count)</a>
-                                <a class="btn-sm btn-dark btn-block text-center d-flex align-items-center justify-content-center" asp-controller="Posts" asp-action="Create" asp-route-id="@blog.Id">New Post</a>
+                                <a class="btn-sm btn-dark btn-block text-center d-flex align-items-center justify-content-center" asp-controller="Posts" asp-action="Create" asp-route-id="@blog.Id">New Post </a>
                                 <a class="btn-sm btn-danger btn-block text-center d-flex align-items-center justify-content-center" type="button" data-toggle="modal" data-target="#deleteCatModal" asp-controller="Blogs" asp-action="Delete" asp-route-id="@blog.Id">Delete Category</a>
                             }
                             else
