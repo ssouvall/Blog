@@ -75,7 +75,7 @@
             <div class="card category-card mb-5 shadow text-center p-0">
                 <img class="post-img img-fluid" src="@_blogImageService.DecodeImage(blog.ImageData, blog.ContentType)" alt="post image" />
                 <div class="card-body">
-                    <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
+                    <a class="card-link" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
                         <h3 class="card-title mb-0 pt-2 pb-2">@blog.Name</h3>
                         @{
                             string catText = blog.Description;

@@ -4388,10 +4388,15 @@ input[type=button].btn-block {
 }
 
 .card-title {
+    font-size: 1.25rem;
     margin-bottom: 0.75rem;
     background: #0085A1;
     border-top: 5px solid black;
     border-bottom: 5px solid black;
+}
+
+.card-link:hover h3 {
+    color: white;
 }
 
 .card-subtitle {
