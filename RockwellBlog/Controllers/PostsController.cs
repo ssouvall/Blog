@@ -43,8 +43,10 @@ namespace RockwellBlog.Controllers
             var pageNumber = page ?? 1;
             var pageSize = 3;
 
-            //Where is like filter. Going to database(_context), going to the Posts table, getting back all posts with the blogId equal to id.
-            //var blogPosts = await _context.Posts.Where(p => p.BlogId == id).ToListAsync();
+            var blogPostsFiltered = await _context.Posts.Where(p => p.BlogId == id && p.PublishState == Enums.PublishState.ProductionReady)
+                                                .OrderByDescending(b => b.Created)
+                                                .ToPagedListAsync(pageNumber, pageSize);
+
             var blogPosts = await _context.Posts.Where(p => p.BlogId == id)
                                                 .OrderByDescending(b => b.Created)
                                                 .ToPagedListAsync(pageNumber, pageSize);
@@ -55,7 +57,15 @@ namespace RockwellBlog.Controllers
             ViewData["SubText"] = blog.Description;
             ViewData["HeaderImage"] = _blogImageService.DecodeImage(blog.ImageData, blog.ContentType);
 
-            return View(blogPosts);
+            if(User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+            {
+                return View(blogPosts);
+            }
+            else
+            {
+                return View(blogPostsFiltered);
+            }
+            
         }
 
         // GET: Posts
