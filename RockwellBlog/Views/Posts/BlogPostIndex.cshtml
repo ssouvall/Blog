@@ -65,13 +65,18 @@
                 </div>
                 <div class="col-lg-6">
                     <h3>@post.Title</h3>
-                    @{
+                    @if (post.Content.Length < 200)
+                    {
+                        <p class="text-left pl-3 pr-3">@Html.Raw(post.Content)</p>
+                    }
+                    else
+                    {
                         string text = post.Content;
                         text = @Html.Raw(text).ToString();
                         string replaced = Regex.Replace(text, @"<[^>]*>", "").Substring(0, 200);
-                    }
+                        <p class="text-left pl-3 pr-3">@replaced  ...</p>
 
-                    <p class="text-left pl-3 pr-3">@replaced  ...</p>
+                    }
                     <small class="post-meta card-text mb-5">Posted by Stephen Souvall on @post.Created.ToString("MMM dd, yyyy")</small>
                     <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug" class="btn btn-primary btn-block rounded mt-3">Read Post</a>
                 </div>

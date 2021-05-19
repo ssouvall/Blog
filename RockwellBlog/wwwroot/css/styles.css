@@ -10492,3 +10492,11 @@ header.masthead .post-heading .meta a {
     overflow: hidden;
     object-fit: cover;
 }
+
+.featured-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}

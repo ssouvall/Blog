@@ -27,12 +27,20 @@
                             </div>
                             <div class="col-lg-6 p-3">
                                 <h3>@post.Title</h3>
-                                @{
+
+                                @if (post.Content.Length < 200)
+                                {
+                                    <p class="text-left pl-3 pr-3">@Html.Raw(post.Content)</p>
+                                }
+                                else
+                                {
                                     string text = post.Content;
                                     text = @Html.Raw(text).ToString();
                                     string replaced = Regex.Replace(text, @"<[^>]*>", "").Substring(0, 200);
+                                    <p class="text-left pl-3 pr-3">@replaced  ...</p>
+                                    
                                 }
-                                <p class="text-left pl-3 pr-3">@replaced  ...</p>
+
                                 <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug" class="btn-sm btn-primary btn-block rounded">Read Post</a>
                             </div>
                         </div>
