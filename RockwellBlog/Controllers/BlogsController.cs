@@ -36,7 +36,6 @@ namespace RockwellBlog.Controllers
         }
 
         // GET: Blogs/Details/5
-        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
