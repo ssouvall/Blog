@@ -38,7 +38,7 @@ namespace RockwellBlog.Models
         public string ContentType { get; set; }
 
         [NotMapped]
-        [Display(Name="Choose Blog Image")]
+        [Display(Name="Choose an Image for this Category")]
         public IFormFile ImageFile { get; set; }
 
 

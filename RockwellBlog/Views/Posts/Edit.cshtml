@@ -34,10 +34,9 @@
             <textarea asp-for="Content" rows="20" class="form-control"></textarea>
         </div>
         <div class="form-group">
-            <label asp-for="ImageFile"></label>
             <div class="custom-file">
-                <input asp-for="ImageFile" type="file" class="form-control-file custom-file-input" />
-                <label class="control-label custom-file-label"></label>
+                <input asp-for="ImageFile" type="file" class="form-control-file custom-file-input" multiple onchange="processSelectedFiles(this)"/>
+                <label class="control-label custom-file-label text-left text-muted">Choose a Header Image for this Post</label>
             </div>
         </div>
         <div class="form-group">
