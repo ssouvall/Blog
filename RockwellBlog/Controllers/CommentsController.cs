@@ -80,7 +80,7 @@ namespace RockwellBlog.Controllers
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
             return View(comment);
         }
-        [Authorize(Roles = "Administrator,Moderator")]
+        [Authorize]
         // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -103,7 +103,7 @@ namespace RockwellBlog.Controllers
         // POST: Comments/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Administrator,Moderator")]
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,AuthorId,ModeratorId,Body,Created,Moderated,ModeratedBody,ModerationType")] Comment comment)
@@ -122,18 +122,18 @@ namespace RockwellBlog.Controllers
 
                         //For adding an edit notification to the text
                         var user = await _userManager.GetUserAsync(User);
-                        string editNotice = $"Edited by: {user.FullName} <br />On: {DateTime.Now:MMM/dd/yyyy}<br />";
+                        string editNotice = $"(Edited by: {user.FullName} on {DateTime.Now:MMM/dd/yyyy}) ";
                         //End of edit notification
 
                         comment.Moderated = DateTime.Now;
                         if (comment.ModeratedBody is not null)
                         {
-                            comment.ModeratedBody = editNotice + comment.ModeratedBody;
+                            comment.ModeratedBody = editNotice + " " + comment.ModeratedBody;
                             comment.Moderated = DateTime.Now;
                         }
                         else
                         {
-                            comment.Body = editNotice + comment.Body;
+                            comment.Body = comment.Body + editNotice;
                         }
                         _context.Update(comment);
                         await _context.SaveChangesAsync();

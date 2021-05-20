@@ -177,16 +177,22 @@
             );
         });
     </script>
-        <!-- Responsive image fix -->
-        <script>
-            $(document).ready(function () {
-                $("img").addClass("img-fluid");
-                $("img").parent("span").css("width", "auto");
-                $("img").parent("span").css("height", "auto");
-            });
-        </script>
+    <!-- Responsive image fix -->
+    <script>
+        $(document).ready(function () {
+            $("img").addClass("img-fluid");
+            $("img").parent("span").css("width", "auto");
+            $("img").parent("span").css("height", "auto");
+        });
+    </script>
     <script src="~/js/summernote-bs4.min.js"></script>
-    <!--FontAwesome-->
+    <!--SweetAlert2-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function noPosts() {
+            Swal.fire({ confirmButtonColor: "#0085A1", title: "Sorry, this category doesn't have any posts yet. Check back soon!" })
+        };
+    </script>
     <!--Bootstrap Toggle-->
     <script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <!-- Core theme JS-->

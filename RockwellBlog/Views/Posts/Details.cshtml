@@ -94,7 +94,7 @@ else
             <div class="media border mr-3 ml-3 p-3 w-100">
                 <img src="@_blogImageService.DecodeImage(comment.Author.ImageData, comment.Author.ContentType)" alt="@comment.Author.FullName" class="mr-3 mt-3 rounded-circle" style="width:60px;">
                 <div class="media-body">
-                    @if (comment.Moderated is null)
+                    @if (comment.Moderated is null || comment.ModeratedBody is null)
                     {
                         <h4>@comment.Author.FullName <small><i>Posted on @comment.Created.ToString("MMM dd, yyyy")</i></small></h4>
                         <p>@comment.Body</p>
@@ -103,7 +103,7 @@ else
                     {
                         @Html.Raw(comment.ModeratedBody)
                         <p class="text-sm-center">@comment.Author.FirstName</p>
-                        <p class="text-sm-center">This comment has been moderated because @comment.ModerationType</p>
+                        <small class="text-sm-center">This comment has been moderated because @comment.ModerationType</small>
                     }
                     @if (User.IsInRole("Administrator") || User.IsInRole("Moderator") || (comment.Moderated is null && userManager.GetUserId(User) == comment.AuthorId))
                     {
@@ -171,7 +171,10 @@ else
     }
 
     <div class="mt-3">
+        @if (User.IsInRole("Administrator"))
+        {
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        }
         <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@Model.BlogId">Back to List</a>
     </div>
 

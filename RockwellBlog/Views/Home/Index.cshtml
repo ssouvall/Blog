@@ -112,7 +112,14 @@
                             }
                             else
                             {
-                                <a class="btn-sm btn-dark btn-block text-center d-flex align-items-center justify-content-center" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">Read Posts (@blog.Posts.Count)</a>
+                                if (blog.Posts.Count > 0)
+                                {
+                                    <a class="btn-sm btn-dark btn-block text-center d-flex align-items-center justify-content-center" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">Read Posts (@blog.Posts.Count)</a>
+                                }
+                                else
+                                {
+                                    <a class="btn-sm btn-dark btn-block text-center d-flex align-items-center justify-content-center no-posts" onclick="noPosts()" href="#">Read Posts (@blog.Posts.Count)</a>
+                                }
                             }
                         </div>
                     </div>

@@ -37,3 +37,4 @@ $(document).ready(function () {
     $('.carouselExampleControls > li').first().addClass('active');
 });
 
+//Fire Sweet Alert if no posts present in a category
