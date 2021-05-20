@@ -98,7 +98,7 @@ namespace RockwellBlog.Controllers
             ViewData["HeaderText"] = post.Title;
             ViewData["SubText"] = post.Abstract;
             ViewData["HeaderImage"] = _blogImageService.DecodeImage(post.ImageData, post.ContentType);
-            ViewData["AuthorText"] = $"Created by Stephen Souvall on {post.Created}";
+            ViewData["AuthorText"] = $"Created by Stephen Souvall on {post.Created.ToString("MMM dd, yyyy")}";
             //ViewData["ModerationType"] = new SelectList(_context.Comment, "Id", "ModerationType");
 
 
