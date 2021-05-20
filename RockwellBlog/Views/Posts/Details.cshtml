@@ -59,7 +59,7 @@
 @if (!User.Identity.IsAuthenticated)
 {
 
-    <div class="col-lg-8 col-md-10 mx-auto">
+    <div class="col-12 mx-auto">
         <hr />
         <a class="btn btn-dark btn-block btn-sm" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Details", "Posts", new { id = Model.Id })">Login to add a comment</a>
         <hr />
@@ -70,7 +70,7 @@ else
 {
     //if you are loggin in I will show you an add comment form
 
-    <div class="col-lg-8 col-md-10 mx-auto">
+    <div class="col-12 mx-auto">
         <form asp-action="Create" asp-controller="Comments" method="post">
             @*----which post did it come from...?-----*@
             <input type="hidden" name="PostId" value="@Model.Id" />
@@ -82,7 +82,7 @@ else
     </div>
 }
 
-<div class="col-lg-8 col-md-10 mx-auto">
+<div class="col-12 mx-auto">
 
     <hr />
     @*show user comments*@
