@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using RockwellBlog.Data;
 using RockwellBlog.Models;
 using RockwellBlog.Services;
+using RockwellBlog.Viewmodels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +30,7 @@ namespace RockwellBlog.Controllers
         //update image action to take in page number
         public async Task<IActionResult> Index(int? page)
         {
-            
+           
             var lpImageData = await _blogImageService.EncodeFileAsync("Banner.png");
             ViewData["HeaderImage"] = _blogImageService.DecodeImage(lpImageData, "png");
             ViewData["HeaderText"] = "Hi, I'm Stephen Souvall.";
@@ -42,11 +43,19 @@ namespace RockwellBlog.Controllers
             var pageNumber = page ?? 1;
             var pageSize = 6;
 
-            var allBlogs = await _context.Blogs.OrderByDescending(b => b.Created)
-                                                .Include(b => b.Posts)
-                                                .ToPagedListAsync(pageNumber, pageSize);
+            //var allBlogs = await _context.Blogs.OrderByDescending(b => b.Created)
+            //                                    .Include(b => b.Posts)
+            //                                    .ToPagedListAsync(pageNumber, pageSize);
 
-            return View(allBlogs); 
+            var indexVM = new HomeIndexViewModel()
+            {
+                FeaturedPosts = await _context.Posts.Where(p => p.IsFeatured == true).ToListAsync(),
+                Blogs = await _context.Blogs.OrderByDescending(b => b.Created).ToPagedListAsync(pageNumber, pageSize)
+            };
+
+
+            //return View(allBlogs); 
+            return View(indexVM);
         }
 
         public IActionResult Privacy()

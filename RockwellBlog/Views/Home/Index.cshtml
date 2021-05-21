@@ -1,52 +1,49 @@
 ﻿@using X.PagedList
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
+@using RockwellBlog.Viewmodels
 @using RockwellBlog.Services
 @using System.Text.RegularExpressions
 @inject IBlogImageService _blogImageService
-@model IPagedList<Blog>
+@model HomeIndexViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
 <div class="text-center mb-5">
-    <h3 class="mb-5 mt-5"><u>The FEATURED BLOG POSTS</u></h3>
+    <h3 class="mb-5 mt-5"><u>FEATURED POSTS</u></h3>
 </div>
 
 <div class="container">
     <div id="carouselControls" class="carousel slide mb-5 mt-5" data-ride="carousel">
         <div class="carousel-inner">
 
-            @foreach (var blog in Model)
+            @foreach (var post in Model.FeaturedPosts)
             {
-                foreach (var post in blog.Posts.Where(p => p.IsFeatured))
-                {
-                    <div class="carousel-item text-center border shadow mb-5 p-3">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <img src="@_blogImageService.DecodeImage(post.ImageData, post.ContentType)" class="d-block w-100 img-fluid p-3 featured-img" alt="featured post image">
-                            </div>
-                            <div class="col-lg-6 p-3">
-                                <h3>@post.Title</h3>
+                <div class="carousel-item text-center border shadow mb-5 p-3">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img src="@_blogImageService.DecodeImage(post.ImageData, post.ContentType)" class="d-block w-100 img-fluid p-3 featured-img" alt="featured post image">
+                        </div>
+                        <div class="col-lg-6 p-3">
+                            <h3>@post.Title</h3>
 
-                                @if (post.Content.Length < 200)
-                                {
-                                    <p class="text-left pl-3 pr-3">@Html.Raw(post.Content)</p>
-                                }
-                                else
-                                {
-                                    string text = post.Content;
-                                    text = @Html.Raw(text).ToString();
-                                    string replaced = Regex.Replace(text, @"<[^>]*>", "").Substring(0, 200);
-                                    <p class="text-left pl-3 pr-3">@replaced  ...</p>
-                                    
-                                }
+                            @if (post.Content.Length < 200)
+                            {
+                                <p class="text-left pl-3 pr-3">@Html.Raw(post.Content)</p>
+                            }
+                            else
+                            {
+                                string text = post.Content;
+                                text = @Html.Raw(text).ToString();
+                                string replaced = Regex.Replace(text, @"<[^>]*>", "").Substring(0, 200);
+                                <p class="text-left pl-3 pr-3">@replaced  ...</p>
 
-                                <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug" class="btn-sm btn-primary btn-block rounded">Read Post</a>
-                            </div>
+                            }
+
+                            <a asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug" class="btn-sm btn-primary btn-block rounded">Read Post</a>
                         </div>
                     </div>
-
-                }
+                </div>
             }
 
         </div>
@@ -76,7 +73,7 @@
 </div>
 <div class="row">
     <!--Model is the IEnumerable and blog is the instance of Model-->
-    @foreach (var blog in Model)
+    @foreach (var blog in Model.Blogs)
     {
         @*<div class="post-preview col-lg-4 col-md-6 col-sm-12">*@
         <div class="post-preview col-lg-4 col-md-6 col-sm-12">
@@ -156,13 +153,13 @@
 
 <div class="row">
     <div class="col h3">
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        Page @(Model.Blogs.PageCount < Model.Blogs.PageNumber ? 0 : Model.Blogs.PageNumber) of @Model.Blogs.PageCount
     </div>
 </div>
 
 <div class="row">
     <div class="col">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+        @Html.PagedListPager(Model.Blogs, page => Url.Action("Index", new { page = page }),
             new PagedListRenderOptions
             {
                 LiElementClasses = new string[] { "page-item" },
