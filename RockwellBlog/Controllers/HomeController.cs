@@ -50,7 +50,7 @@ namespace RockwellBlog.Controllers
             var indexVM = new HomeIndexViewModel()
             {
                 FeaturedPosts = await _context.Posts.Where(p => p.IsFeatured == true).ToListAsync(),
-                Blogs = await _context.Blogs.OrderByDescending(b => b.Created).ToPagedListAsync(pageNumber, pageSize)
+                Blogs = await _context.Blogs.OrderByDescending(b => b.Created).Include(b => b.Posts).ToPagedListAsync(pageNumber, pageSize)
             };
 
 

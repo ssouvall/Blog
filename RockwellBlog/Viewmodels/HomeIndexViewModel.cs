@@ -10,6 +10,7 @@ namespace RockwellBlog.Viewmodels
     public class HomeIndexViewModel
     {
         public List<Post> FeaturedPosts { get; set; }
+
         public IPagedList<Blog> Blogs { get; set; }
     }
 }
