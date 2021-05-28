@@ -11,10 +11,10 @@
 
 
 <article>
-    <div class="container">
+    <div class="container" id="inner-cont">
         <div class="row">
             <div class="col-12 mx-auto">
-                <div>
+                <div id="article-div">
                     <a class="btn-sm btn-primary text-decoration-none rounded mr-3" asp-controller="Home" asp-action="Index">Home <i class="fas fa-home"></i></a>
                     <a class="btn-sm btn-primary text-decoration-none mr-auto rounded mr-3" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@Model.BlogId">Back to Category <i class="far fa-arrow-alt-circle-left"></i></a>
                     @if (User.IsInRole("Administrator"))
@@ -23,7 +23,7 @@
                         <a class="btn-sm btn-danger text-decoration-none ml-auto float-right rounded mr-3" type="button" data-toggle="modal" data-target="#deleteModal" asp-controller="Posts" asp-action="Delete" asp-route-id="@Model.BlogId">Delete <i class="fas fa-trash-alt"></i></a>
                     }
                 </div>
-                <div class="border bg-white shadow pl-5 pr-5 mt-5 mb-5">
+                <div class="border bg-white shadow pl-3 pr-3 pl-md-5 pr-md-5 mt-5 mb-5">
                     <p>  @Html.Raw(Model.Content)  </p>
                 </div>
             </div>

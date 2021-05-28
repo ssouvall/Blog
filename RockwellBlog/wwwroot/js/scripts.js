@@ -54,3 +54,14 @@ function processSelectedFiles(fileInput) {
         }
     }
 }
+
+//resize post details for mobile
+if (window.innerWidth < 800) {
+    document.getElementById("main-content").classList.remove("container")
+    document.getElementById("inner-cont").classList.remove("container")
+    document.getElementById("article-div").classList.add("p-3")
+} else {
+    document.getElementById("main-content").classList.add("container")
+    document.getElementById("inner-cont").classList.add("container")
+    document.getElementById("article-div").classList.remove("p-3")
+}
