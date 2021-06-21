@@ -22,13 +22,13 @@
 
 //change header image based on screen size
 
-const masthead = document.getElementById("masthead");
+//const masthead = document.getElementById("masthead");
 
-if (window.innerWidth < 800) {
-    masthead.classList.add("small-banner");
-} else {
-    masthead.classList.remove("small-banner");
-};
+//if (window.innerWidth < 800) {
+//    masthead.classList.add("small-banner");
+//} else {
+//    masthead.classList.remove("small-banner");
+//};
 
 
 //make carousel dynamic by adding "active" to first slide

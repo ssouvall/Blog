@@ -31,7 +31,7 @@ namespace RockwellBlog.Controllers
         public async Task<IActionResult> Index(int? page)
         {
            
-            var lpImageData = await _blogImageService.EncodeFileAsync("Banner.png");
+            var lpImageData = await _blogImageService.EncodeFileAsync("alt-banner.jpg");
             ViewData["HeaderImage"] = _blogImageService.DecodeImage(lpImageData, "png");
             ViewData["HeaderText"] = "Hi, I'm Stephen Souvall.";
             ViewData["SubText"] = "This is my blog.";
