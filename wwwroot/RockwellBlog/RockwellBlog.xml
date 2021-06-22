@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RockwellBlog</name>
+    </assembly>
+    <members>
+        <member name="M:RockwellBlog.Controllers.API.PostsController.GetTopXPosts(System.Int32)">
+            <summary>
+            This method will get the most recent X number of blog posts
+            </summary>
+            <param name="num">The number of blog posts you want...</param>
+            <returns>The latest num number of blog posts ordered by created descending</returns>
+        </member>
+        <member name="T:RockwellBlog.Models.Post">
+            <summary>
+            The model for blog posts
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.Id">
+            <summary>
+            The Primary Key of the Post
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.BlogId">
+            <summary>
+            The foreign key to the blog that is the parent of this post
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.Title">
+            <summary>
+            The title of the post
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.Abstract">
+            <summary>
+            A brief intro to the post to summarize the post content
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.Content">
+            <summary>
+            The main content of the post
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.Created">
+            <summary>
+            The date the post was created
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.Updated">
+            <summary>
+            The date the post was most recently updated, if applicable
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.ImageData">
+            <summary>
+            This is the byte array holding the image
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.ContentType">
+            <summary>
+            The file type of the image
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.ImageFile">
+            <summary>
+            The actual image not stored as byte array
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.Slug">
+            <summary>
+            This is an internal field used to route to the Details action
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.PublishState">
+            <summary>
+            The current status of the post on the publishing journey
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.IsFeatured">
+            <summary>
+            Is the post featured? If marked true it will appear in the home page featured posts carousel
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.Blog">
+            <summary>
+            Navigational property for parent blog
+            </summary>
+        </member>
+        <member name="P:RockwellBlog.Models.Post.Comments">
+            <summary>
+            Navigational property for child comments
+            </summary>
+        </member>
+    </members>
+</doc>

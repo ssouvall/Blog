@@ -14,6 +14,7 @@ using RockwellBlog.Models;
 using RockwellBlog.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,6 +36,16 @@ namespace RockwellBlog
                 options.UseNpgsql(
                     Connection.GetConnectionString(Configuration)));
             services.AddDatabaseDeveloperPageExceptionFilter();
+            
+            //Configure a Cross Origin Resource Sharing (CORS) Policy
+            services.AddCors(options => 
+            {
+                options.AddPolicy("DefaultPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            
+            });
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -51,6 +62,7 @@ namespace RockwellBlog
             services.AddScoped<SearchService>();
             services.AddSwaggerGen(c =>
             {
+                c.IncludeXmlComments($"{Directory.GetCurrentDirectory()}/wwwroot/RockwellBlog.xml", true);
                 c.SwaggerDoc("v1", new OpenApiInfo 
                 { 
                     Title = "YOUR_PROJECT_NAME", 
@@ -81,10 +93,14 @@ namespace RockwellBlog
                 app.UseHsts();
             }
 
+            app.UseCors("DefaultPolicy");
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "TestAPI v1");
+                c.InjectJavascript("/swagger/swagger.js");
+                c.InjectStylesheet("/swagger/swagger.css");
                 c.DocumentTitle = "Stephen Souvall Blog Public API";
             });
             

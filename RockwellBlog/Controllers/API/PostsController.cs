@@ -20,7 +20,11 @@ namespace RockwellBlog.Controllers.API
         {
             _context = context;
         }
-
+        /// <summary>
+        /// This method will get the most recent X number of blog posts
+        /// </summary>
+        /// <param name="num">The number of blog posts you want...</param>
+        /// <returns>The latest num number of blog posts ordered by created descending</returns>
         [HttpGet("/GetTopXPosts/{num}")]
         public async Task<ActionResult<IEnumerable<Post>>> GetTopXPosts(int num)
         {
