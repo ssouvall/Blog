@@ -65,7 +65,7 @@ namespace RockwellBlog
                 c.IncludeXmlComments($"{Directory.GetCurrentDirectory()}/wwwroot/RockwellBlog.xml", true);
                 c.SwaggerDoc("v1", new OpenApiInfo 
                 { 
-                    Title = "YOUR_PROJECT_NAME", 
+                    Title = "Stephen_Souvall_Blog", 
                     Version = "v1",
                     Description = "Serving up Blog data using .NET Core",
                     Contact = new OpenApiContact
@@ -98,7 +98,7 @@ namespace RockwellBlog
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "TestAPI v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogAPI v1");
                 c.InjectJavascript("/swagger/swagger.js");
                 c.InjectStylesheet("/swagger/swagger.css");
                 c.DocumentTitle = "Stephen Souvall Blog Public API";

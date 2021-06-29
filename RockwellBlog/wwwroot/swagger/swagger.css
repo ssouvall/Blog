@@ -2,9 +2,11 @@
 }
 
 .swagger-ui .topbar {
-    background-color: #ff993b;
+    background-color: #203ff1;
 }
 
-/*.topbar-wrapper img {
-    content: url()
-}*/
+.topbar-wrapper img {
+    content: url("img/SouvallLogo.png");
+    height: auto;
+    width: 20rem;
+}
